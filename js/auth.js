@@ -1,14 +1,26 @@
 /**
- * SANCTUARY AUTHENTICATION & LOCK SCREEN MODULE
+ * SANCTUARY AUTHENTICATION & LOCK SCREEN MODULE (HIGH SECURITY MODE)
  * Private security gate for Laru & Sid's Romantic Sanctuary
  * Decoy: Student Examination & Marks Portal
  * Hardcoded accepted password: 10 stars ("**********")
+ * 
+ * High Security Rules:
+ * 1. Zero local storage: No unlock state is stored in localStorage or sessionStorage.
+ * 2. Instant auto-logout when Chrome is closed, reloaded, tab switched, or moved to background.
+ * 3. Instant auto-logout when coming back (requires password re-entry).
+ * 4. Inactivity auto-logout: Automatically logs out after 2 minutes of inactivity.
+ * 5. Instant lockdown on backgrounding: closes lightbox, pauses music, closes modals, and hides all romantic content.
  */
 
 const SanctuaryAuth = {
   SESSION_KEY: 'larusid_sanctuary_unlocked',
   isUnlocked: false,
   isBound: false,
+
+  // Idle timeout: 2 minutes of inactivity triggers auto logout
+  IDLE_TIMEOUT_MS: 2 * 60 * 1000,
+  idleTimer: null,
+  idleListenerAttached: false,
 
   ACADEMIC_TITLE: "Student Examination & Marks Portal | Central Board Results",
   ROMANTIC_TITLE: "Laru & Sid • Forever in Love",
@@ -19,8 +31,24 @@ const SanctuaryAuth = {
   HARDCODED_PASSWORD: '**********',
 
   init() {
-    this.checkSession();
+    // Purge any legacy stored state immediately for zero-persistence security
+    this.purgeStoredState();
+    
+    // Always start locked
+    this.lock(true);
+    
+    // Bind all user interaction and security listeners
     this.bindEvents();
+    this.bindHighSecurityListeners();
+  },
+
+  purgeStoredState() {
+    try {
+      sessionStorage.removeItem(this.SESSION_KEY);
+      localStorage.removeItem(this.SESSION_KEY);
+    } catch (e) {
+      // Storage unavailable or blocked (incognito), which is safe
+    }
   },
 
   updateBrowserIdentity(isUnlocked) {
@@ -35,33 +63,12 @@ const SanctuaryAuth = {
   },
 
   /**
-   * Check if user is already unlocked in current session
+   * Check if user is unlocked (Strict zero-persistence: always false on fresh load)
    */
   checkSession() {
-    const lockScreen = document.getElementById('sanctuary-lock-screen');
-    if (!lockScreen) return;
-
-    let savedState = null;
-    try {
-      savedState = sessionStorage.getItem(this.SESSION_KEY);
-    } catch (e) {
-      console.warn('sessionStorage check warning:', e);
-    }
-
-    if (savedState === 'true') {
-      this.isUnlocked = true;
-      this.updateBrowserIdentity(true);
-      lockScreen.style.display = 'none';
-    } else {
-      this.isUnlocked = false;
-      this.updateBrowserIdentity(false);
-      lockScreen.style.display = 'flex';
-      lockScreen.classList.remove('unlocked');
-      // Auto-focus input after a tiny tick
-      setTimeout(() => {
-        const input = document.getElementById('sanctuary-passcode-input');
-        if (input && document.activeElement !== input) input.focus();
-      }, 300);
+    this.purgeStoredState();
+    if (!this.isUnlocked) {
+      this.lock(true);
     }
   },
 
@@ -139,11 +146,8 @@ const SanctuaryAuth = {
    */
   unlock() {
     this.isUnlocked = true;
-    try {
-      sessionStorage.setItem(this.SESSION_KEY, 'true');
-    } catch (e) {
-      console.warn('Could not save to sessionStorage:', e);
-    }
+    // Zero local persistence: intentionally DO NOT write to sessionStorage or localStorage
+    this.purgeStoredState();
 
     this.updateBrowserIdentity(true);
 
@@ -179,7 +183,9 @@ const SanctuaryAuth = {
       }, 450);
     }
 
-    console.log('Sanctuary unlocked successfully!');
+    // Start auto-logout idle timer
+    this.startIdleWatcher();
+    console.log('[SanctuaryAuth] Sanctuary unlocked (High-Security Session active).');
   },
 
   /**
@@ -209,42 +215,178 @@ const SanctuaryAuth = {
   },
 
   /**
-   * Re-lock sanctuary manually
+   * Lock sanctuary immediately or smoothly
+   * Closes all private media (lightbox, audio, modals) and restores academic decoy portal
+   * @param {boolean} instant - If true, covers the screen immediately without animation
+   * @param {string} feedbackMsg - Optional feedback message (e.g. Session timed out)
    */
-  lock() {
+  lock(instant = false, feedbackMsg = '') {
     this.isUnlocked = false;
-    try {
-      sessionStorage.removeItem(this.SESSION_KEY);
-    } catch (e) {
-      console.warn('sessionStorage remove warning:', e);
-    }
+    this.stopIdleWatcher();
+    this.purgeStoredState();
     this.updateBrowserIdentity(false);
 
-    const lockScreen = document.getElementById('sanctuary-lock-screen');
+    // 1. Pause audio player immediately
+    try {
+      if (window.RomanticAudioPlayer && typeof RomanticAudioPlayer.pause === 'function') {
+        RomanticAudioPlayer.pause();
+      }
+    } catch (e) {}
+
+    // 2. Close cinema lightbox immediately
+    try {
+      if (window.CinemaLightbox && typeof CinemaLightbox.close === 'function') {
+        CinemaLightbox.close();
+      }
+    } catch (e) {}
+
+    // 3. Close any open settings/profile modals
+    try {
+      document.querySelectorAll('.modal-backdrop.open').forEach(modal => {
+        modal.classList.remove('open');
+      });
+    } catch (e) {}
+
+    // 4. Wipe input and reset feedback
     const input = document.getElementById('sanctuary-passcode-input');
     const errorEl = document.getElementById('lock-error-msg');
-
-    if (errorEl) {
-      errorEl.textContent = '';
-      errorEl.className = 'lock-feedback';
-    }
 
     if (input) {
       input.value = '';
     }
 
+    if (errorEl) {
+      if (feedbackMsg) {
+        errorEl.textContent = feedbackMsg;
+        errorEl.className = 'lock-feedback';
+      } else {
+        errorEl.textContent = '';
+        errorEl.className = 'lock-feedback';
+      }
+    }
+
+    // 5. Restore lock screen decoy immediately
+    const lockScreen = document.getElementById('sanctuary-lock-screen');
     if (lockScreen) {
+      lockScreen.classList.remove('unlocked');
       lockScreen.style.display = 'flex';
       lockScreen.style.pointerEvents = 'auto';
-      lockScreen.style.opacity = '0';
-      requestAnimationFrame(() => {
-        lockScreen.style.transition = 'opacity 0.4s ease';
+
+      if (instant) {
+        lockScreen.style.transition = 'none';
         lockScreen.style.opacity = '1';
-      });
+        setTimeout(() => {
+          lockScreen.style.transition = '';
+        }, 50);
+      } else {
+        lockScreen.style.opacity = '0';
+        requestAnimationFrame(() => {
+          lockScreen.style.transition = 'opacity 0.35s ease';
+          lockScreen.style.opacity = '1';
+        });
+      }
+
       setTimeout(() => {
-        if (input) input.focus();
-      }, 300);
+        if (input && !document.hidden) input.focus();
+      }, 100);
     }
+  },
+
+  /**
+   * Start idle auto-logout watcher
+   */
+  startIdleWatcher() {
+    this.resetIdleTimer();
+
+    if (!this.idleListenerAttached) {
+      this.idleListenerAttached = true;
+      const activityEvents = ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click'];
+      const onUserActivity = () => {
+        if (this.isUnlocked) {
+          this.resetIdleTimer();
+        }
+      };
+      activityEvents.forEach(evt => {
+        window.addEventListener(evt, onUserActivity, { passive: true });
+      });
+    }
+  },
+
+  resetIdleTimer() {
+    if (this.idleTimer) clearTimeout(this.idleTimer);
+    this.idleTimer = setTimeout(() => {
+      if (this.isUnlocked) {
+        console.warn('[SanctuaryAuth] Auto-logged out due to 2 minutes of inactivity.');
+        this.lock(false, 'Session locked automatically due to inactivity.');
+      }
+    }, this.IDLE_TIMEOUT_MS);
+  },
+
+  stopIdleWatcher() {
+    if (this.idleTimer) {
+      clearTimeout(this.idleTimer);
+      this.idleTimer = null;
+    }
+  },
+
+  /**
+   * Bind high-security background, tab-switch, and page-close watchers
+   */
+  bindHighSecurityListeners() {
+    // 1. Page Visibility API: When tab or window moves to background, lock IMMEDIATELY
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        // Tab switched away or browser minimized: instant lockdown!
+        this.lock(true);
+      } else {
+        // Came back: ensure locked screen is ready and focused
+        if (!this.isUnlocked) {
+          this.lock(true);
+          const input = document.getElementById('sanctuary-passcode-input');
+          if (input) input.focus();
+        }
+      }
+    });
+
+    // 2. Pagehide & Freeze: When user navigates away or browser unloads page
+    window.addEventListener('pagehide', () => {
+      this.lock(true);
+    });
+
+    window.addEventListener('freeze', () => {
+      this.lock(true);
+    });
+
+    // 3. Before unload: Closing Chrome tab or browser window
+    window.addEventListener('beforeunload', () => {
+      this.lock(true);
+      this.purgeStoredState();
+    });
+
+    // 4. Window blur: When switching applications (Alt-Tab, task switcher, clicking outside browser)
+    window.addEventListener('blur', () => {
+      setTimeout(() => {
+        // Avoid auto-locking if user simply clicked inside an embedded video iframe
+        if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+          return;
+        }
+        // If window actually lost focus or document is hidden, lock instantly
+        if (!document.hasFocus() || document.hidden) {
+          if (this.isUnlocked) {
+            this.lock(true);
+          }
+        }
+      }, 120);
+    });
+
+    // 5. Window focus: When user comes back into the window, ensure locked screen is presented
+    window.addEventListener('focus', () => {
+      if (!this.isUnlocked) {
+        this.lock(true);
+        const input = document.getElementById('sanctuary-passcode-input');
+        if (input) input.focus();
+      }
+    });
   },
 
   /**
@@ -294,7 +436,7 @@ const SanctuaryAuth = {
     // Top navigation bar re-lock button
     if (relockBtn) {
       relockBtn.addEventListener('click', () => {
-        this.lock();
+        this.lock(false);
       });
     }
   }
@@ -303,6 +445,7 @@ const SanctuaryAuth = {
 // Global shortcuts for direct calling
 window.SanctuaryAuth = SanctuaryAuth;
 window.unlockSanctuary = () => SanctuaryAuth.unlock();
+window.lockSanctuary = () => SanctuaryAuth.lock(false);
 
 // Auto-initialize when script loads or DOM is ready
 if (typeof document !== 'undefined') {

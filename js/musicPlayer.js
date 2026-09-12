@@ -107,6 +107,14 @@ const RomanticAudioPlayer = {
     }
   },
 
+  pause() {
+    if (this.isPlaying) {
+      this.isPlaying = false;
+      if (this.timerId) clearTimeout(this.timerId);
+      this.updateUI();
+    }
+  },
+
   updateUI() {
     const vinylDisc = document.getElementById('vinyl-disc');
     const playIcon = document.getElementById('player-icon-state');
