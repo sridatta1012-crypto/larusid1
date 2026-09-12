@@ -54,106 +54,30 @@ const SanctuaryAuth = {
     }
   },
 
-  /**
-   * Generate list of valid present date & milestone date formats
-   * Allows flexible, natural entry (e.g. DDMMYYYY, YYYY-MM-DD, DD/MM/YYYY, etc.)
-   */
-  getValidPasscodes() {
-    const validCodes = new Set();
-
-    // 1. DYNAMIC PRESENT DATE (Current Date / Today)
-    const now = new Date();
-    const day = String(now.getDate()).padStart(2, '0');
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const year = String(now.getFullYear());
-    const shortYear = year.slice(-2);
-
-    // Formats for present date
-    validCodes.add(`${day}${month}${year}`);         // e.g. 12092026
-    validCodes.add(`${day}-${month}-${year}`);       // e.g. 12-09-2026
-    validCodes.add(`${day}/${month}/${year}`);       // e.g. 12/09/2026
-    validCodes.add(`${day}.${month}.${year}`);       // e.g. 12.09.2026
-    validCodes.add(`${year}-${month}-${day}`);       // e.g. 2026-09-12
-    validCodes.add(`${year}${month}${day}`);         // e.g. 20260912
-    validCodes.add(`${day}${month}`);               // e.g. 1209
-    validCodes.add(`${day}${month}${shortYear}`);    // e.g. 120926
-    validCodes.add(`${month}${day}${year}`);         // e.g. 09122026 (US format)
-    validCodes.add(`${month}/${day}/${year}`);       // e.g. 09/12/2026
-
-    // Month names (e.g., "12 September 2026", "12 Sep 2026")
-    const monthNames = ['january', 'february', 'march', 'april', 'may', 'june', 
-                        'july', 'august', 'september', 'october', 'november', 'december'];
-    const shortMonthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 
-                             'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-    const curMonthName = monthNames[now.getMonth()];
-    const curShortMonth = shortMonthNames[now.getMonth()];
-
-    validCodes.add(`${day} ${curMonthName} ${year}`.toLowerCase());
-    validCodes.add(`${day} ${curShortMonth} ${year}`.toLowerCase());
-    validCodes.add(`${curMonthName} ${day} ${year}`.toLowerCase());
-    validCodes.add(`${curMonthName} ${day}`.toLowerCase());
-
-    // 2. MILESTONE / ANNIVERSARY DATE (The date present in the app: April 14, 2023)
-    let annivStr = Storage.getString(APP_CONFIG.STORAGE_KEYS.ANNIVERSARY, APP_CONFIG.defaultAnniversary);
-    if (annivStr) {
-      const aDate = new Date(annivStr);
-      if (!isNaN(aDate.getTime())) {
-        const aDay = String(aDate.getDate()).padStart(2, '0');
-        const aMonth = String(aDate.getMonth() + 1).padStart(2, '0');
-        const aYear = String(aDate.getFullYear());
-        const aShortYear = aYear.slice(-2);
-
-        validCodes.add(`${aDay}${aMonth}${aYear}`);       // 14042023
-        validCodes.add(`${aDay}-${aMonth}-${aYear}`);     // 14-04-2023
-        validCodes.add(`${aDay}/${aMonth}/${aYear}`);     // 14/04/2023
-        validCodes.add(`${aDay}.${aMonth}.${aYear}`);     // 14.04.2023
-        validCodes.add(`${aYear}-${aMonth}-${aDay}`);     // 2023-04-14
-        validCodes.add(`${aYear}${aMonth}${aDay}`);       // 20230414
-        validCodes.add(`${aDay}${aMonth}`);               // 1404
-        validCodes.add(`${aDay}${aMonth}${aShortYear}`);  // 140423
-        validCodes.add('14042023');
-        validCodes.add('2023-04-14');
-        validCodes.add('14-04-2023');
-        validCodes.add('14/04/2023');
-      }
-    }
-
-    // 3. HARDCODED SECRETS & LITERAL STRINGS
-    validCodes.add('presentdate');
-    validCodes.add('present date');
-    validCodes.add('**********');
-    validCodes.add('password');
-    validCodes.add('larusid');
-    validCodes.add('laru&sid');
-
-    return validCodes;
-  },
+  // Hardcoded password: 10 stars ("**********")
+  HARDCODED_PASSWORD: '**********',
 
   /**
-   * Normalize input to compare cleanly
-   */
-  normalizeInput(raw) {
-    if (!raw) return '';
-    return raw.trim().toLowerCase();
-  },
-
-  /**
-   * Verify entered passcode
+   * Verify entered password against hardcoded 10 stars ("**********")
    */
   verifyPasscode(input) {
-    const clean = this.normalizeInput(input);
-    if (!clean) return false;
+    if (!input) return false;
+    const clean = input.trim();
 
-    // Check exact matches
-    const validCodes = this.getValidPasscodes();
-    if (validCodes.has(clean)) return true;
+    // Exact match 10 stars
+    if (clean === this.HARDCODED_PASSWORD) return true;
 
-    // Also check digits-only match (e.g. user typed 12/09/2026 or 12-09-2026)
-    const digitsOnly = clean.replace(/\D/g, '');
-    if (digitsOnly && validCodes.has(digitsOnly)) return true;
+    // With spaces between stars (e.g. "* * * * * * * * * *")
+    const noSpaces = clean.replace(/\s+/g, '');
+    if (noSpaces === this.HARDCODED_PASSWORD) return true;
 
-    // If input is literal string of 4 or more asterisks (e.g. **********)
-    if (/^\*+$/.test(clean) && clean.length >= 4) return true;
+    // Friendly asterisk count (8 to 12 asterisks)
+    if (/^\*+$/.test(noSpaces) && noSpaces.length >= 8 && noSpaces.length <= 12) {
+      return true;
+    }
+
+    // Literal text "10 stars"
+    if (clean.toLowerCase() === '10 stars') return true;
 
     return false;
   },
