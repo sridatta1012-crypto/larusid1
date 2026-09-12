@@ -8,9 +8,25 @@ const SanctuaryAuth = {
   SESSION_KEY: 'larusid_sanctuary_unlocked',
   isUnlocked: false,
 
+  ACADEMIC_TITLE: "Student Examination & Marks Portal | Central Board Results",
+  ROMANTIC_TITLE: "Laru & Sid • Forever in Love",
+  ACADEMIC_FAVICON: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'><path d='M12 3L1 9l11 6 9-4.91V17h2V9L12 3z'/><path d='M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z' fill='%231d4ed8'/></svg>",
+  ROMANTIC_FAVICON: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e57b93'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>",
+
   init() {
     this.checkSession();
     this.bindEvents();
+  },
+
+  updateBrowserIdentity(isUnlocked) {
+    const favicon = document.getElementById('app-favicon');
+    if (isUnlocked) {
+      document.title = this.ROMANTIC_TITLE;
+      if (favicon) favicon.href = this.ROMANTIC_FAVICON;
+    } else {
+      document.title = this.ACADEMIC_TITLE;
+      if (favicon) favicon.href = this.ACADEMIC_FAVICON;
+    }
   },
 
   /**
@@ -23,9 +39,11 @@ const SanctuaryAuth = {
     const savedState = sessionStorage.getItem(this.SESSION_KEY);
     if (savedState === 'true') {
       this.isUnlocked = true;
+      this.updateBrowserIdentity(true);
       lockScreen.style.display = 'none';
     } else {
       this.isUnlocked = false;
+      this.updateBrowserIdentity(false);
       lockScreen.style.display = 'flex';
       lockScreen.classList.remove('unlocked');
       // Auto-focus input after a tiny tick
@@ -146,6 +164,7 @@ const SanctuaryAuth = {
   unlock() {
     this.isUnlocked = true;
     sessionStorage.setItem(this.SESSION_KEY, 'true');
+    this.updateBrowserIdentity(true);
 
     const lockScreen = document.getElementById('sanctuary-lock-screen');
     const input = document.getElementById('sanctuary-passcode-input');
@@ -212,6 +231,7 @@ const SanctuaryAuth = {
   lock() {
     this.isUnlocked = false;
     sessionStorage.removeItem(this.SESSION_KEY);
+    this.updateBrowserIdentity(false);
 
     const lockScreen = document.getElementById('sanctuary-lock-screen');
     const input = document.getElementById('sanctuary-passcode-input');

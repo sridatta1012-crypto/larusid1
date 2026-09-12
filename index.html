@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="referrer" content="no-referrer" />
-  <title>Laru & Sid • Forever in Love</title>
-  <meta name="description" content="A private romantic photo sanctuary celebrating our sweetest memories, powered by Google Drive." />
+  <title id="app-page-title">Student Examination & Marks Portal | Central Board Results</title>
+  <meta name="description" content="Central Examination Board official student marks verification and scorecard evaluation portal." />
   
-  <!-- Favicon Heart -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e57b93'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>" />
+  <!-- Academic Portal Favicon (disguised by default, switches to heart when unlocked) -->
+  <link rel="icon" id="app-favicon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'><path d='M12 3L1 9l11 6 9-4.91V17h2V9L12 3z'/><path d='M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z' fill='%231d4ed8'/></svg>" />
 
   <!-- Premium Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -32,9 +32,12 @@
       <!-- Academic / Examination Seal Emblem -->
       <div class="portal-badge-wrap">
         <div class="marks-portal-badge">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="rgba(37, 99, 235, 0.2)" stroke="#60a5fa"/>
+            <path d="M12 7l5 2.5-5 2.5-5-2.5 5-2.5z" fill="#93c5fd" stroke="#bfdbfe" stroke-width="1.4"/>
+            <path d="M9 12v2.5c1.5 0.8 4.5 0.8 6 0V12" stroke="#bfdbfe" stroke-width="1.4"/>
+            <line x1="17" y1="9.5" x2="17" y2="13.5" stroke="#bfdbfe" stroke-width="1.5"/>
+            <circle cx="17" cy="14" r="0.75" fill="#bfdbfe"/>
           </svg>
         </div>
         <div class="portal-status-dot-badge" title="Portal Online • Central Assessment Server">
@@ -156,9 +159,9 @@
           </div>
 
           <!-- Sparks Toggle -->
-          <button class="btn-icon" id="particles-toggle-btn" title="Toggle floating love sparkles">
+          <button class="btn-icon" id="particles-toggle-btn" title="Toggle floating sparkles">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
             </svg>
           </button>
 
@@ -173,22 +176,30 @@
           <!-- Couple Profile / Edit Names -->
           <button class="btn-icon" id="open-profile-btn" title="Couple Names & Anniversary Settings">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><path d="M12 13a1.5 1.5 0 0 0 1.5-1.5c0-1.2-1.5-2-1.5-2s-1.5.8-1.5 2A1.5 1.5 0 0 0 12 13z" fill="currentColor"/>
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+              <path d="M16 11l2 2 4-4" stroke="var(--color-primary)" stroke-width="1.8"/>
             </svg>
           </button>
 
           <!-- Lock Sanctuary Button -->
-          <button class="btn-icon" id="lock-sanctuary-btn" title="Lock Sanctuary Vault">
+          <button class="btn-icon" id="lock-sanctuary-btn" title="Lock Portal">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              <circle cx="12" cy="16.5" r="1.2" fill="currentColor"/>
             </svg>
           </button>
 
           <!-- Google Drive Settings Button -->
           <button class="btn-primary" id="open-drive-modal-btn" style="padding: 8px 18px; font-size: 0.85rem;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/>
+            <svg width="17" height="17" viewBox="0 0 87.3 78" fill="currentColor">
+              <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+              <path d="M43.65 25 29.9 1.2c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44A9.06 9.06 0 0 0 0 53h27.5z" fill="#00ac47"/>
+              <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.85 10.15z" fill="#ea4335"/>
+              <path d="M43.65 25 57.4 1.2C56.05.4 54.5 0 52.9 0H34.4c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+              <path d="M59.8 53H87.3c0-1.55-.4-3.1-1.2-4.5l-13.75-23.8-13.75 23.8z" fill="#ffba00"/>
+              <path d="M43.65 25 30 48.7h27.3l13.75-23.7z" fill="#2684fc"/>
             </svg>
             <span>Drive</span>
           </button>
@@ -204,26 +215,20 @@
           <!-- View Switcher Tabs -->
           <div class="view-tabs" role="tablist">
             <button class="view-tab-btn active" data-view="masonry" role="tab" title="Mosaic Masonry">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="7" height="7"></rect>
-                <rect x="14" y="3" width="7" height="12"></rect>
-                <rect x="3" y="14" width="7" height="7"></rect>
-                <rect x="14" y="19" width="7" height="2"></rect>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>
               </svg>
               <span>Masonry</span>
             </button>
             <button class="view-tab-btn" data-view="polaroid" role="tab" title="Polaroid Scrapbook">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                <polyline points="21 15 16 10 5 21"></polyline>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
               </svg>
               <span>Scrapbook</span>
             </button>
             <button class="view-tab-btn" data-view="timeline" role="tab" title="Timeline Journey">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
               </svg>
               <span>Timeline</span>
             </button>
