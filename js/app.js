@@ -13,7 +13,8 @@ const App = {
       SanctuaryAuth.init();
     }
     LoveCounter.init();
-    RomanticParticles.init();
+    // Particles removed by user preference
+    // RomanticParticles.init();
     RomanticAudioPlayer.init();
     CinemaLightbox.init();
     PhotoGallery.init();
