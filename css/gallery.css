@@ -19,34 +19,45 @@
 @media (max-width: 640px) {
   .masonry-grid {
     column-count: 2;
-    column-gap: 10px;
+    column-gap: 8px;
   }
   .masonry-item {
-    margin-bottom: 10px;
-    border-radius: 12px;
+    margin-bottom: 8px;
+    border-radius: 14px;
   }
   .masonry-img-wrapper {
-    min-height: 120px;
+    min-height: 150px;
   }
   .masonry-img {
-    min-height: 120px;
+    min-height: 150px;
   }
   .masonry-overlay {
-    padding: 8px 10px;
+    padding: 10px 10px 8px;
+    /* Always visible on mobile (no hover) */
+    opacity: 1;
+    background: linear-gradient(to top, rgba(15,7,11,0.85) 0%, transparent 100%);
   }
   .masonry-title {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
   .masonry-date {
-    font-size: 0.68rem;
+    font-size: 0.66rem;
   }
   .card-tag {
-    font-size: 0.62rem;
+    font-size: 0.6rem;
     padding: 1px 6px;
+  }
+  /* Favorite btn always visible on mobile */
+  .card-favorite-btn {
+    opacity: 1;
+    width: 32px;
+    height: 32px;
+    top: 8px;
+    right: 8px;
   }
 }
 
-@media (max-width: 340px) {
+@media (max-width: 380px) {
   .masonry-grid {
     column-count: 1;
   }

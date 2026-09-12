@@ -18,13 +18,71 @@ const App = {
     CinemaLightbox.init();
     PhotoGallery.init();
 
-    // 2. Setup Theme & Particles Toggles
+    // 2. Setup Theme, Particles Toggles & Mobile Nav
     this.initTheme();
     this.bindModals();
     this.bindHeroActions();
+    this.bindMobileNav();
 
     // 3. Load Photos (from Drive or Starter Collection)
     await this.loadGallery();
+  },
+
+  /** Wire mobile bottom nav buttons to the same actions as desktop navbar */
+  bindMobileNav() {
+    // Music toggle
+    const mobMusic = document.getElementById('mob-music-btn');
+    if (mobMusic) {
+      mobMusic.addEventListener('click', () => {
+        RomanticAudioPlayer.toggle();
+      });
+    }
+
+    // Sparkles toggle
+    const mobParticles = document.getElementById('mob-particles-btn');
+    if (mobParticles) {
+      mobParticles.addEventListener('click', () => {
+        const isEnabled = RomanticParticles.toggle();
+        mobParticles.style.opacity = isEnabled ? '1' : '0.45';
+        const desktop = document.getElementById('particles-toggle-btn');
+        if (desktop) desktop.style.opacity = isEnabled ? '1' : '0.5';
+      });
+    }
+
+    // Theme toggle — reuse existing desktop button click
+    const mobTheme = document.getElementById('mob-theme-btn');
+    if (mobTheme) {
+      mobTheme.addEventListener('click', () => {
+        const desktopThemeBtn = document.getElementById('theme-toggle-btn');
+        if (desktopThemeBtn) desktopThemeBtn.click();
+      });
+    }
+
+    // Profile modal
+    const mobProfile = document.getElementById('mob-profile-btn');
+    if (mobProfile) {
+      mobProfile.addEventListener('click', () => {
+        const desktopProfileBtn = document.getElementById('open-profile-btn');
+        if (desktopProfileBtn) desktopProfileBtn.click();
+      });
+    }
+
+    // Drive modal
+    const mobDrive = document.getElementById('mob-drive-btn');
+    if (mobDrive) {
+      mobDrive.addEventListener('click', () => {
+        const desktopDriveBtn = document.getElementById('open-drive-modal-btn');
+        if (desktopDriveBtn) desktopDriveBtn.click();
+      });
+    }
+
+    // Lock
+    const mobLock = document.getElementById('mob-lock-btn');
+    if (mobLock) {
+      mobLock.addEventListener('click', () => {
+        if (window.SanctuaryAuth) SanctuaryAuth.lock(false);
+      });
+    }
   },
 
   initTheme() {

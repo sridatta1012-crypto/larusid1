@@ -656,73 +656,153 @@
   margin-top: 10px;
 }
 
-/* Responsive adjustments (Mobile-First Polish) */
+/* ==========================================================================
+   MOBILE-FIRST RESPONSIVE LAYOUT
+   ========================================================================== */
+
+/* ── Bottom Navigation Bar (Mobile Only) ─────────────────────────── */
+.mobile-bottom-nav {
+  display: none; /* hidden on desktop */
+}
+
 @media (max-width: 768px) {
+
+  /* ── Top Navbar: compact, brand-only ─────────────────────────────── */
   .navbar {
-    padding: 10px 14px;
-    gap: 8px;
+    padding: 10px 16px;
+    gap: 0;
+  }
+  /* Hide all nav action items — they move to bottom nav */
+  .nav-actions {
+    display: none;
   }
   .brand-monogram {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     font-size: 0.95rem;
   }
   .brand-names {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     letter-spacing: 0;
   }
-  .nav-actions {
-    gap: 6px;
-  }
-  .status-pill {
-    padding: 6px 10px;
-  }
-  #nav-status-text {
-    display: none; /* Icon-only status dot on mobile for compact navbar */
-  }
-  .mini-player {
-    padding: 4px 8px 4px 6px;
-    gap: 6px;
-  }
-  .player-text {
-    display: none; /* Hide track title on mobile to preserve navbar space */
-  }
-  .vinyl-disc {
-    width: 28px;
-    height: 28px;
-  }
-  .btn-icon {
-    width: 36px;
-    height: 36px;
+
+  /* ── Sticky Bottom Navigation Bar ───────────────────────────────── */
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: rgba(10, 4, 8, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(247, 168, 184, 0.15);
+    padding: 8px 4px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+    align-items: center;
+    justify-content: space-around;
+    gap: 4px;
   }
 
-  /* Gallery Controls Mobile */
+  [data-theme="light"] .mobile-bottom-nav {
+    background: rgba(253, 247, 248, 0.96);
+    border-top-color: rgba(184, 67, 93, 0.15);
+  }
+
+  .mob-nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    flex: 1;
+    min-width: 48px;
+    padding: 6px 4px;
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 0.6rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .mob-nav-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.8;
+    transition: transform 0.2s ease;
+  }
+
+  .mob-nav-btn:active {
+    transform: scale(0.9);
+    color: var(--color-primary);
+  }
+
+  .mob-nav-btn.active,
+  .mob-nav-btn:focus {
+    color: var(--color-primary);
+  }
+
+  /* Special Drive button: pill style */
+  .mob-nav-btn.drive-btn {
+    background: linear-gradient(135deg, rgba(37,99,235,0.15), rgba(16,185,129,0.1));
+    border: 1px solid rgba(96,165,250,0.3);
+    border-radius: 12px;
+    color: #60a5fa;
+  }
+
+  /* Lock button: danger accent */
+  .mob-nav-btn.lock-btn {
+    color: rgba(229,123,147,0.7);
+  }
+  .mob-nav-btn.lock-btn:active { color: var(--color-primary); }
+
+  /* Push gallery section above bottom nav */
+  .app-container {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+
+  /* ── Gallery Controls Toolbar ────────────────────────────────────── */
   .gallery-controls-container {
-    padding: 0 12px 20px;
-    margin-top: 14px;
+    padding: 0 12px 16px;
+    margin-top: 10px;
   }
   .gallery-toolbar {
-    padding: 12px 14px;
-    gap: 12px;
+    padding: 10px 12px;
+    gap: 10px;
     flex-direction: column;
     align-items: stretch;
+    border-radius: 16px;
   }
+
+  /* View tabs: icons only, equal width */
   .view-tabs {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     padding: 3px;
+    gap: 2px;
   }
   .view-tab-btn {
-    padding: 8px 6px;
-    font-size: 0.78rem;
+    padding: 9px 6px;
+    font-size: 0.75rem;
     justify-content: center;
     gap: 5px;
+    border-radius: 10px;
   }
   .view-tab-btn svg {
-    width: 15px;
-    height: 15px;
+    width: 16px;
+    height: 16px;
   }
+
+  /* Filter pills: horizontal scroll */
   .filter-group {
     width: 100%;
     display: flex;
@@ -731,50 +811,64 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding-bottom: 2px;
+    gap: 6px;
   }
-  .filter-group::-webkit-scrollbar {
-    display: none;
-  }
+  .filter-group::-webkit-scrollbar { display: none; }
   .filter-btn {
     flex-shrink: 0;
-    padding: 7px 13px;
+    padding: 8px 14px;
     font-size: 0.78rem;
-  }
-  .search-box {
-    width: 100%;
-  }
-  .search-input {
-    width: 100% !important;
-    font-size: 16px !important; /* Prevents iOS auto-zoom */
-    min-height: 42px;
+    border-radius: 20px;
+    white-space: nowrap;
   }
 
-  /* Modals: Native Mobile Bottom Sheet Experience */
+  /* Search: full width */
+  .search-box { width: 100%; }
+  .search-input {
+    width: 100% !important;
+    font-size: 16px !important;
+    min-height: 44px;
+    border-radius: 12px;
+  }
+
+  /* Memory count badge: hide to save space */
+  #memory-count-label { display: none; }
+
+  /* ── Modals: Bottom Sheet ────────────────────────────────────────── */
   .modal-backdrop {
     padding: 0;
     align-items: flex-end;
   }
   .modal-card {
     border-radius: 24px 24px 0 0;
-    max-height: 88dvh;
-    padding: 24px 18px 28px;
+    max-height: 90dvh;
+    padding: 24px 18px calc(28px + env(safe-area-inset-bottom));
     transform: translateY(100%);
+  }
+  /* Drag handle indicator */
+  .modal-card::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: var(--color-border-strong);
+    border-radius: 2px;
+    margin: 0 auto 20px;
   }
   .modal-backdrop.open .modal-card {
     transform: translateY(0);
   }
   .modal-close-btn {
-    top: 14px;
-    right: 14px;
+    top: 16px;
+    right: 16px;
     width: 32px;
     height: 32px;
   }
-  .modal-title {
-    font-size: 1.35rem;
-  }
+  .modal-title { font-size: 1.3rem; }
   .form-input {
-    font-size: 16px !important; /* Prevents iOS auto-zoom */
-    min-height: 46px;
+    font-size: 16px !important;
+    min-height: 48px;
+    border-radius: 12px;
   }
   .form-actions {
     flex-direction: column;
@@ -784,17 +878,20 @@
   }
   .form-actions button {
     width: 100%;
-    min-height: 46px;
+    min-height: 48px;
+    border-radius: 14px;
   }
+
+  /* Mini music player: icon only */
+  .mini-player { gap: 6px; padding: 4px 8px 4px 6px; }
+  .player-text { display: none; }
+  .vinyl-disc { width: 28px; height: 28px; }
 }
 
 @media (max-width: 420px) {
-  .brand-names span:not(:first-child) {
-    display: none;
-  }
-  .nav-actions {
-    gap: 4px;
-  }
+  .brand-names span:not(:first-child) { display: none; }
+  .view-tab-btn span { display: none; } /* icon-only tabs on very small screens */
+  .view-tab-btn { padding: 10px; }
 }
 
 /* ==========================================================================
