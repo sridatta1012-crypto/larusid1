@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Laru & Sid • Forever in Love</title>
+  <meta name="description" content="A private romantic photo sanctuary celebrating our sweetest memories, powered by Google Drive." />
+  
+  <!-- Favicon Heart -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e57b93'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>" />
+
+  <!-- Premium Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/design-system.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/gallery.css" />
+  <link rel="stylesheet" href="css/lightbox.css" />
+</head>
+<body>
+
+  <!-- Floating Romantic Hearts & Sparkles Canvas -->
+  <canvas id="particles-canvas"></canvas>
+
+  <div class="app-container">
+    
+    <!-- Top Navigation Bar -->
+    <header>
+      <nav class="navbar" id="main-navbar">
+        <div class="nav-brand" id="brand-profile-trigger">
+          <div class="brand-monogram" id="brand-monogram">
+            <span>L</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="margin: 0 2px;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>S</span>
+          </div>
+          <div class="brand-names" id="nav-names">Laru <span>&</span> Sid</div>
+        </div>
+
+        <div class="nav-actions">
+          <!-- Google Drive Status Pill -->
+          <div class="status-pill" id="nav-status-pill" title="Click to configure Google Drive">
+            <span class="status-dot demo" id="nav-status-dot"></span>
+            <span id="nav-status-text">Demo Gallery</span>
+          </div>
+
+          <!-- Ambient Romantic Music Mini Player -->
+          <div class="mini-player" id="mini-audio-player">
+            <div class="vinyl-disc" id="vinyl-disc" title="Toggle romantic background melody">
+              <div class="vinyl-center"></div>
+            </div>
+            <div class="player-text">
+              <span class="player-title">Whispers of Love</span>
+              <span class="player-subtitle" id="player-subtitle">Click to Play</span>
+            </div>
+            <button class="btn-icon" id="music-toggle-btn" style="width: 28px; height: 28px; font-size: 0.75rem;" title="Play / Pause Melody">
+              <span id="player-icon-state">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </span>
+            </button>
+          </div>
+
+          <!-- Sparks Toggle -->
+          <button class="btn-icon" id="particles-toggle-btn" title="Toggle floating love sparkles">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+            </svg>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button class="btn-icon" id="theme-toggle-btn" title="Toggle light / romantic dark theme">
+            <svg class="theme-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+            </svg>
+          </button>
+
+          <!-- Couple Profile / Edit Names -->
+          <button class="btn-icon" id="open-profile-btn" title="Couple Names & Anniversary Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><path d="M12 13a1.5 1.5 0 0 0 1.5-1.5c0-1.2-1.5-2-1.5-2s-1.5.8-1.5 2A1.5 1.5 0 0 0 12 13z" fill="currentColor"/>
+            </svg>
+          </button>
+
+          <!-- Google Drive Settings Button -->
+          <button class="btn-primary" id="open-drive-modal-btn" style="padding: 8px 18px; font-size: 0.85rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/>
+            </svg>
+            <span>Drive</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Hero Section -->
+      <section class="hero-section" id="hero-section">
+        <div class="hero-subtitle script-font">
+          <span>Forever & Always</span>
+          <span class="pulse-heart">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:inline; vertical-align:-2px;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </span>
+        </div>
+
+        <h1 class="hero-title">
+          Our Love Story, <br/>
+          <span class="name-highlight" id="hero-couple-names">Laru & Sid</span>
+        </h1>
+
+        <div class="hero-quote" id="hero-quote-container">
+          <span id="hero-quote-text">In all the world, there is no heart for me like yours.</span>
+        </div>
+
+        <!-- Realtime Days in Love Counter -->
+        <div class="love-counter-box" id="love-counter-box">
+          <div class="counter-tag">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 2.4 7.2h7.6l-6.1 4.5 2.3 7.3-6.2-4.5-6.2 4.5 2.3-7.3-6.1-4.5h7.6z"/></svg>
+            <span>Cherishing Every Second Together</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 2.4 7.2h7.6l-6.1 4.5 2.3 7.3-6.2-4.5-6.2 4.5 2.3-7.3-6.1-4.5h7.6z"/></svg>
+          </div>
+
+          <div class="counter-grid">
+            <div class="counter-item">
+              <div class="counter-number" id="counter-days">0</div>
+              <div class="counter-label">Days</div>
+            </div>
+            <div class="counter-separator">:</div>
+            <div class="counter-item">
+              <div class="counter-number" id="counter-hours">00</div>
+              <div class="counter-label">Hours</div>
+            </div>
+            <div class="counter-separator">:</div>
+            <div class="counter-item">
+              <div class="counter-number" id="counter-minutes">00</div>
+              <div class="counter-label">Minutes</div>
+            </div>
+            <div class="counter-separator">:</div>
+            <div class="counter-item">
+              <div class="counter-number" id="counter-seconds">00</div>
+              <div class="counter-label">Seconds</div>
+            </div>
+          </div>
+
+          <div class="counter-footer">
+            <span>Since our milestone on <strong id="anniversary-display">April 14, 2023</strong></span>
+            <span>•</span>
+            <button class="btn-edit-date" id="edit-date-btn">Change Date</button>
+          </div>
+        </div>
+
+        <!-- Quick Romantic Actions -->
+        <div class="hero-buttons">
+          <button class="btn-primary" id="hero-explore-btn">
+            <span>View Our Memories</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+          </button>
+          <button class="btn-secondary" id="hero-surprise-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+            </svg>
+            <span>Surprise Memory</span>
+          </button>
+          <button class="btn-secondary" id="hero-start-slideshow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Start Cinema Slideshow</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Sticky Gallery Controls & View Switcher -->
+      <section class="gallery-controls-container" id="gallery-toolbar-section">
+        <div class="gallery-toolbar">
+          
+          <!-- View Switcher Tabs -->
+          <div class="view-tabs" role="tablist">
+            <button class="view-tab-btn active" data-view="masonry" role="tab" title="Mosaic Masonry">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="12"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+                <rect x="14" y="19" width="7" height="2"></rect>
+              </svg>
+              <span>Masonry</span>
+            </button>
+            <button class="view-tab-btn" data-view="polaroid" role="tab" title="Polaroid Scrapbook">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span>Scrapbook</span>
+            </button>
+            <button class="view-tab-btn" data-view="timeline" role="tab" title="Timeline Journey">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Timeline</span>
+            </button>
+          </div>
+
+          <!-- Filters & Count -->
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="photos">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                <circle cx="12" cy="13" r="3"/>
+              </svg>
+              <span>Photos</span>
+            </button>
+            <button class="filter-btn" data-filter="videos">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                <line x1="2" x2="22" y1="8" y2="8"/>
+                <line x1="2" x2="22" y1="16" y2="16"/>
+                <line x1="6" x2="6" y1="4" y2="8"/>
+                <line x1="6" x2="6" y1="16" y2="20"/>
+                <line x1="18" x2="18" y1="4" y2="8"/>
+                <line x1="18" x2="18" y1="16" y2="20"/>
+              </svg>
+              <span>Videos</span>
+            </button>
+            <button class="filter-btn" data-filter="favorites">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+              <span>Favorites</span>
+            </button>
+
+            <!-- Sort Order Toggle -->
+            <button class="filter-btn active" id="sort-order-btn" title="Newest on top (Click to toggle)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="m21 8-4-4-4 4"/><path d="M17 4v16"/>
+              </svg>
+              <span id="sort-order-label">Newest First</span>
+            </button>
+
+            <!-- Album / Subfolder Filter -->
+            <select class="album-select" id="album-select-filter" style="display: none;" title="Filter by Subfolder Album">
+              <option value="all">All Folders</option>
+            </select>
+
+            <!-- Search input -->
+            <div class="search-box">
+              <span class="search-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/>
+                </svg>
+              </span>
+              <input type="text" class="search-input" id="search-input" placeholder="Search memories..." />
+            </div>
+
+            <span class="status-pill" id="memory-count-label" style="margin-left: 8px;">
+              Loading...
+            </span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Main Photo Gallery Section -->
+      <section class="gallery-section" id="gallery-container">
+        <!-- Injected via JavaScript (Masonry, Polaroid, or Timeline) -->
+      </section>
+    </main>
+
+    <!-- Romantic Footer -->
+    <footer class="app-footer">
+      <div class="footer-quote">With every heartbeat, I choose you.</div>
+      <p class="footer-credits">
+        Dedicated to <strong>Laru</strong> 
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--color-primary)" style="display:inline; margin: 0 4px; vertical-align:middle;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> 
+        <strong>Sid</strong> • Powered by Google Drive API
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: GOOGLE DRIVE CONNECTION & CONFIGURATION -->
+  <!-- ========================================================================= -->
+  <div class="modal-backdrop" id="drive-modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-drive-modal-btn" aria-label="Close modal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+      </button>
+      
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--color-primary)">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+          </svg>
+          <span>Connect Google Drive</span>
+        </h2>
+        <p class="modal-description">
+          Stream photos directly from your couple's shared Google Drive folder into this gallery in full resolution.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="drive-folder-input">Google Drive Folder ID or Share Link</label>
+        <input 
+          type="text" 
+          id="drive-folder-input" 
+          class="form-input" 
+          value="https://drive.google.com/drive/folders/148a0nRp4lMvXrERneAZiKtxtRt8Q2Gzb?usp=drive_link"
+          placeholder="Paste folder link: https://drive.google.com/drive/folders/..." 
+        />
+        <div class="form-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline; vertical-align: -2px; margin-right: 4px;"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+          Paste the folder link or ID. Ensure the folder is shared with <strong>"Anyone with the link can view"</strong>.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="drive-api-key-input">Google Drive API Key</label>
+        <input 
+          type="password" 
+          id="drive-api-key-input" 
+          class="form-input" 
+          value="AIzaSyAhTmpcWpBIs-i_Wlke6RHon_l2oPIvP_Y" 
+        />
+        <div class="form-hint">
+          Your Google Drive API Key is securely stored locally in your browser.
+        </div>
+      </div>
+
+      <div id="drive-status-msg" class="form-hint" style="font-weight: 600; min-height: 20px;"></div>
+
+      <div class="form-actions">
+        <button class="btn-secondary" id="disconnect-drive-btn" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
+          Load Demo
+        </button>
+        <button class="btn-secondary" id="test-drive-btn">
+          Test Connection
+        </button>
+        <button class="btn-primary" id="save-drive-btn">
+          Save & Load Photos
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: COUPLE PROFILE & ANNIVERSARY SETTINGS -->
+  <!-- ========================================================================= -->
+  <div class="modal-backdrop" id="profile-modal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="close-profile-modal-btn" aria-label="Close modal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+      </button>
+
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><path d="M12 13a1.5 1.5 0 0 0 1.5-1.5c0-1.2-1.5-2-1.5-2s-1.5.8-1.5 2A1.5 1.5 0 0 0 12 13z" fill="var(--color-primary)"/></svg>
+          <span>Our Love Story Details</span>
+        </h2>
+        <p class="modal-description">
+          Personalize your names and our special milestone date for the live love ticker.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="partner1-input">Partner 1 Name</label>
+        <input type="text" id="partner1-input" class="form-input" placeholder="Laru" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="partner2-input">Partner 2 Name</label>
+        <input type="text" id="partner2-input" class="form-input" placeholder="Sid" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="anniversary-input">Our Anniversary / First Date</label>
+        <input type="date" id="anniversary-input" class="form-input" />
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-primary" id="save-profile-btn">
+          Update Our Story
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: SURPRISE MEMORY POPUP -->
+  <!-- ========================================================================= -->
+  <div class="modal-backdrop" id="surprise-modal" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width: 480px; text-align: center;">
+      <button class="modal-close-btn" id="close-surprise-modal-btn" aria-label="Close modal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+      </button>
+
+      <div class="envelope-icon">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><path d="M12 13.5a2 2 0 0 0 2-2c0-1.5-2-2.5-2-2.5S10 10 10 11.5a2 2 0 0 0 2 2z" fill="var(--color-primary)"/></svg>
+      </div>
+      <h3 class="serif-font" style="font-size: 1.6rem;">Remember This Day?</h3>
+      <p class="modal-description" id="surprise-date">A sweet memory from our journey</p>
+
+      <div class="surprise-img-frame">
+        <img id="surprise-img" src="" alt="Surprise Memory" />
+      </div>
+
+      <div class="surprise-caption" id="surprise-caption">Walking hand in hand into the sunset</div>
+
+      <div style="margin-top: 24px;">
+        <button class="btn-primary" id="surprise-open-lightbox-btn">
+          View in Fullscreen Cinema
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- CINEMA LIGHTBOX & SLIDESHOW VIEWER -->
+  <!-- ========================================================================= -->
+  <div class="lightbox-backdrop" id="lightbox-modal" role="dialog" aria-modal="true">
+    
+    <!-- Slideshow Progress Bar -->
+    <div class="slideshow-progress-bar" id="slideshow-progress"></div>
+
+    <!-- Lightbox Header -->
+    <div class="lightbox-header">
+      <div class="lightbox-counter-label" id="lightbox-counter">1 of 8 memories</div>
+      
+      <div class="lightbox-actions">
+        <!-- Slideshow Autoplay Button -->
+        <button class="lightbox-btn" id="lightbox-slideshow-btn" title="Toggle Slideshow (Space)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+
+        <!-- Favorite Heart Button -->
+        <button class="lightbox-btn" id="lightbox-favorite-btn" title="Love this memory">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+
+        <!-- Download Original -->
+        <a class="lightbox-btn" id="lightbox-download-btn" title="Download High-Res" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+        </a>
+
+        <!-- Close Button -->
+        <button class="lightbox-btn" id="lightbox-close-btn" title="Close (Escape)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Lightbox Main Stage -->
+    <div class="lightbox-body" id="lightbox-body-area">
+      <button class="lightbox-nav-btn lightbox-nav-prev" id="lightbox-prev-btn" title="Previous photo (Arrow Left)">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      
+      <div class="lightbox-image-container" id="lightbox-image-container">
+        <img class="lightbox-image" id="lightbox-active-img" src="" alt="Cinema View" referrerpolicy="no-referrer" />
+        <div class="lightbox-video-container" id="lightbox-video-container">
+          <iframe class="lightbox-video-frame" id="lightbox-video-frame" allow="autoplay; encrypted-media; fullscreen"></iframe>
+        </div>
+      </div>
+
+      <button class="lightbox-nav-btn lightbox-nav-next" id="lightbox-next-btn" title="Next photo (Arrow Right)">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+
+    <!-- Lightbox Bottom Sticky Bar (Title, Date & Lover's Note) -->
+    <div class="lightbox-bottom-bar">
+      <div class="lightbox-meta-info">
+        <div class="lightbox-title" id="lightbox-title">Golden Hour by the Ocean</div>
+        <div class="lightbox-subtext">
+          <span id="lightbox-date">July 22, 2024</span>
+        </div>
+      </div>
+
+      <!-- Lover's Digital Note Pad -->
+      <div class="lightbox-note-container">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+        <input 
+          type="text" 
+          id="lightbox-note-input" 
+          class="lightbox-note-input" 
+          placeholder="Leave a sweet memory note here..." 
+        />
+        <button class="lightbox-save-note-btn" id="lightbox-save-note-btn">Save Note</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/driveApi.js"></script>
+  <script src="js/loveCounter.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/musicPlayer.js"></script>
+  <script src="js/lightbox.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+/* ==========================================================================
+   CINEMA LIGHTBOX & SLIDESHOW VIEWER
+   ========================================================================== */
+
+.lightbox-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(7, 3, 5, 0.94);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal);
+}
+
+.lightbox-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Slideshow Progress Bar */
+.slideshow-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--color-primary);
+  width: 0%;
+  box-shadow: 0 0 10px var(--color-primary);
+  z-index: 2100;
+  transition: width 0.1s linear;
+}
+
+/* Lightbox Header Bar */
+.lightbox-header {
+  position: relative;
+  z-index: 2050;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  background: linear-gradient(to bottom, rgba(7, 3, 5, 0.8) 0%, transparent 100%);
+}
+
+.lightbox-counter-label {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.lightbox-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lightbox-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.lightbox-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.08);
+}
+
+.lightbox-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 14px var(--color-primary-glow);
+}
+
+/* Main Lightbox Body */
+.lightbox-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 10px 80px 80px;
+}
+
+@media (max-width: 768px) {
+  .lightbox-body {
+    padding: 10px 20px 80px;
+  }
+}
+
+.lightbox-image-container {
+  max-width: 90vw;
+  max-height: 80vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-normal);
+}
+
+/* Lightbox Video Frame */
+.lightbox-video-container {
+  width: 80vw;
+  max-width: 900px;
+  aspect-ratio: 16 / 9;
+  max-height: 75vh;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+  background: #000;
+  display: none;
+}
+
+.lightbox-video-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+  user-select: none;
+  animation: photoZoomIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes photoZoomIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Navigation Arrows */
+.lightbox-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  cursor: pointer;
+  z-index: 2050;
+  transition: all var(--transition-fast);
+}
+
+.lightbox-nav-btn:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary-light);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 20px var(--color-primary-glow);
+}
+
+.lightbox-nav-prev { left: 24px; }
+.lightbox-nav-next { right: 24px; }
+
+@media (max-width: 768px) {
+  .lightbox-nav-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 1rem;
+  }
+  .lightbox-nav-prev { left: 10px; }
+  .lightbox-nav-next { right: 10px; }
+}
+
+/* Lightbox Bottom Details & Sticky Notes Bar */
+.lightbox-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 28px;
+  background: linear-gradient(to top, rgba(7, 3, 5, 0.95) 0%, rgba(7, 3, 5, 0.7) 70%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  z-index: 2050;
+}
+
+.lightbox-meta-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.lightbox-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.lightbox-subtext {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Lover's Note Box in Lightbox */
+.lightbox-note-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  max-width: 450px;
+}
+
+.lightbox-note-input {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-family: var(--font-script);
+  font-size: 1.25rem;
+  outline: none;
+  width: 100%;
+}
+
+.lightbox-note-input::placeholder {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  font-family: var(--font-sans);
+}
+
+.lightbox-save-note-btn {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Floating Heart Burst on Lightbox Favorite */
+.heart-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 5rem;
+  color: var(--color-primary);
+  pointer-events: none;
+  animation: burstHeart 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes burstHeart {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  50% { transform: translate(-50%, -50%) scale(1.4); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+}

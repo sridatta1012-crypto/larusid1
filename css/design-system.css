@@ -1,0 +1,309 @@
+/* ==========================================================================
+   ROMANTIC LUXURY DESIGN SYSTEM
+   Theme: Laru & Sid - Whispers of Love
+   ========================================================================== */
+
+:root {
+  /* Color Palette - Warm Rose, Champagne & Deep Velvet */
+  --color-bg: #0f070b;
+  --color-bg-secondary: #190b13;
+  --color-bg-card: rgba(32, 14, 25, 0.65);
+  --color-bg-card-hover: rgba(48, 20, 37, 0.85);
+  --color-bg-glass: rgba(255, 255, 255, 0.05);
+  --color-bg-glass-strong: rgba(255, 255, 255, 0.12);
+  
+  --color-primary: #e57b93;
+  --color-primary-light: #f7a8b8;
+  --color-primary-dark: #b8435d;
+  --color-primary-glow: rgba(229, 123, 147, 0.4);
+  
+  --color-accent-gold: #e2b97f;
+  --color-accent-gold-light: #f4d9a6;
+  --color-accent-glow: rgba(226, 185, 127, 0.35);
+
+  --color-text: #fff6f8;
+  --color-text-secondary: #d6b8c4;
+  --color-text-muted: #9b7d8b;
+  --color-border: rgba(247, 168, 184, 0.18);
+  --color-border-strong: rgba(247, 168, 184, 0.38);
+
+  /* Polaroids & Paper */
+  --color-polaroid: #fffbf9;
+  --color-polaroid-text: #2c1a21;
+  --color-tape: rgba(243, 214, 166, 0.55);
+
+  /* Typography */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-script: 'Caveat', 'Dancing Script', cursive;
+
+  /* Shadows & Depth */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.6);
+  --shadow-romantic: 0 12px 40px -10px var(--color-primary-glow);
+  --shadow-polaroid: 0 16px 36px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Backdrop Filters */
+  --glass-blur: blur(20px);
+  --glass-blur-heavy: blur(36px);
+}
+
+/* Light Mode Option */
+[data-theme="light"] {
+  --color-bg: #fdf7f8;
+  --color-bg-secondary: #f6e8ec;
+  --color-bg-card: rgba(255, 255, 255, 0.85);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.98);
+  --color-bg-glass: rgba(255, 255, 255, 0.65);
+  --color-bg-glass-strong: rgba(255, 255, 255, 0.9);
+  
+  --color-text: #26111a;
+  --color-text-secondary: #6b4353;
+  --color-text-muted: #96707f;
+  --color-border: rgba(184, 67, 93, 0.15);
+  --color-border-strong: rgba(184, 67, 93, 0.3);
+  --shadow-romantic: 0 12px 35px -8px rgba(229, 123, 147, 0.25);
+}
+
+/* Resets & Global Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* Ambient Radial Glows */
+body::before {
+  content: '';
+  position: fixed;
+  top: -15vw;
+  left: 20%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(229, 123, 147, 0.18) 0%, rgba(226, 185, 127, 0.06) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: floatOrb 24s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -20vw;
+  right: 10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(184, 67, 93, 0.15) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  animation: floatOrb 30s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.08); }
+  100% { transform: translate(-30px, 40px) scale(0.95); }
+}
+
+/* Base Typography */
+h1, h2, h3, h4, .serif-font {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.script-font {
+  font-family: var(--font-script);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: var(--color-bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
+}
+
+.glass-pill {
+  background: var(--color-bg-glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+/* Interactive Glowing Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: #fff;
+  padding: 12px 26px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-romantic);
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -6px var(--color-primary-glow);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--color-bg-glass-strong);
+  color: var(--color-text);
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  backdrop-filter: var(--glass-blur);
+  transition: all var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: var(--color-border-strong);
+  transform: translateY(-2px);
+  color: var(--color-text);
+}
+
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-glass);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  background: var(--color-bg-glass-strong);
+  border-color: var(--color-primary);
+  color: var(--color-primary-light);
+  transform: scale(1.05);
+}
+
+/* Animations */
+@keyframes heartPulse {
+  0% { transform: scale(1); }
+  14% { transform: scale(1.22); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.15); }
+  70% { transform: scale(1); }
+}
+
+.pulse-heart {
+  display: inline-block;
+  color: var(--color-primary);
+  animation: heartPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(229, 123, 147, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(229, 123, 147, 0.55);
+}
