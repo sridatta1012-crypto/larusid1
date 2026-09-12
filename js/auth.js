@@ -343,6 +343,13 @@ const SanctuaryAuth = {
    * Bind high-security background, tab-switch, and page-close watchers
    */
   bindHighSecurityListeners() {
+    // 0. Escape key → instant logout
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.isUnlocked) {
+        this.lock(false, 'Logged out.');
+      }
+    });
+
     // 1. Page Visibility API: When tab or window moves to background, lock IMMEDIATELY
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {

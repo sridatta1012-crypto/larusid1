@@ -447,4 +447,176 @@ const PhotoGallery = {
   }
 };
 
+/* ==========================================================================
+   FOLDER BROWSER — shown after login, before entering a specific album
+   ========================================================================== */
+const FolderBrowser = {
+  albums: [],        // [{id, name, count, thumb}]
+  allPhotos: [],
+  isActive: false,
+
+  /**
+   * Show the folder browser with available albums.
+   * Called by App after photos load.
+   */
+  show(photos, albums) {
+    this.allPhotos = photos || [];
+    this.isActive = true;
+
+    // Build albums with photo counts and a thumbnail
+    const albumMap = new Map();
+
+    // "All Memories" virtual folder
+    const firstThumb = photos.find(p => p.thumbnail);
+    albumMap.set('all', {
+      id: 'all',
+      name: 'All Memories',
+      count: photos.length,
+      thumb: firstThumb ? firstThumb.thumbnail : '',
+      isAll: true
+    });
+
+    // Real subfolders from Drive
+    (albums || []).forEach(album => {
+      const albumPhotos = photos.filter(p => p.albumId === album.id);
+      const t = albumPhotos.find(p => p.thumbnail);
+      albumMap.set(album.id, {
+        id: album.id,
+        name: album.name,
+        count: albumPhotos.length,
+        thumb: t ? t.thumbnail : '',
+        isAll: false
+      });
+    });
+
+    // Photos in root (no subfolder)
+    const rootPhotos = photos.filter(p => p.albumName === 'Main Album' || !p.albumId || p.albumId === DriveAPI.extractFolderId(DriveAPI.getFolderId()));
+    if (rootPhotos.length > 0 && albumMap.size > 1) {
+      const rootThumb = rootPhotos.find(p => p.thumbnail);
+      albumMap.set('root', {
+        id: 'root',
+        name: 'Main Folder',
+        count: rootPhotos.length,
+        thumb: rootThumb ? rootThumb.thumbnail : '',
+        isAll: false,
+        isRoot: true
+      });
+    }
+
+    this.albums = Array.from(albumMap.values());
+    this._render();
+
+    // Hide gallery toolbar controls (not needed in folder view)
+    const toolbar = document.getElementById('gallery-toolbar-section');
+    if (toolbar) toolbar.style.display = 'none';
+  },
+
+  hide() {
+    this.isActive = false;
+    const toolbar = document.getElementById('gallery-toolbar-section');
+    if (toolbar) toolbar.style.display = '';
+  },
+
+  _render() {
+    const container = document.getElementById('gallery-container');
+    if (!container) return;
+
+    let html = `
+      <div class="folder-browser">
+        <div class="folder-browser-header">
+          <h2 class="folder-browser-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+            </svg>
+            Our Memories
+          </h2>
+          <p class="folder-browser-subtitle">${this.allPhotos.length} moments across ${this.albums.length - 1 || 1} album${this.albums.length - 1 !== 1 ? 's' : ''}</p>
+        </div>
+        <div class="folder-grid">
+    `;
+
+    this.albums.forEach(album => {
+      const hasThumb = !!album.thumb;
+      html += `
+        <div class="folder-card" data-album-id="${album.id}" role="button" tabindex="0">
+          <div class="folder-card-cover">
+            ${hasThumb
+              ? `<img src="${album.thumb}" alt="${album.name}" loading="lazy" referrerpolicy="no-referrer" />`
+              : `<div class="folder-card-no-thumb">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+                  </svg>
+                </div>`
+            }
+            ${album.isAll
+              ? `<div class="folder-card-badge all-badge">★ All</div>`
+              : `<div class="folder-card-badge">${album.count}</div>`
+            }
+          </div>
+          <div class="folder-card-info">
+            <div class="folder-card-name">${album.name}</div>
+            <div class="folder-card-count">${album.count} item${album.count !== 1 ? 's' : ''}</div>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `
+        </div>
+      </div>
+    `;
+
+    container.innerHTML = html;
+
+    // Attach click handlers
+    container.querySelectorAll('.folder-card').forEach(card => {
+      const open = () => this._openAlbum(card.dataset.albumId);
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') open(); });
+    });
+  },
+
+  _openAlbum(albumId) {
+    this.hide();
+
+    // Filter photos to the chosen album
+    let filtered;
+    if (albumId === 'all') {
+      filtered = this.allPhotos;
+    } else if (albumId === 'root') {
+      const rootId = DriveAPI.extractFolderId(DriveAPI.getFolderId());
+      filtered = this.allPhotos.filter(p => p.albumName === 'Main Album' || p.albumId === rootId);
+    } else {
+      filtered = this.allPhotos.filter(p => p.albumId === albumId);
+    }
+
+    const album = this.albums.find(a => a.id === albumId);
+    const albumName = album ? album.name : 'Memories';
+
+    // Show photos with a back button
+    PhotoGallery.setPhotos(filtered, []);
+
+    // Inject back button above gallery
+    const container = document.getElementById('gallery-container');
+    if (container) {
+      const backBar = document.createElement('div');
+      backBar.className = 'folder-back-bar';
+      backBar.innerHTML = `
+        <button class="folder-back-btn" id="folder-back-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          Albums
+        </button>
+        <span class="folder-back-crumb">${albumName}</span>
+      `;
+      container.parentNode.insertBefore(backBar, container);
+
+      backBar.querySelector('#folder-back-btn').addEventListener('click', () => {
+        backBar.remove();
+        FolderBrowser.show(this.allPhotos, this.albums.filter(a => !a.isAll && !a.isRoot).map(a => ({ id: a.id, name: a.name })));
+      });
+    }
+  }
+};
+
 window.PhotoGallery = PhotoGallery;
+window.FolderBrowser = FolderBrowser;

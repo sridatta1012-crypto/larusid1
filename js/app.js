@@ -142,7 +142,8 @@ const App = {
         });
         // Sort newest on top
         this.activeMedia.sort((a, b) => (b.dateTimestamp || 0) - (a.dateTimestamp || 0));
-        PhotoGallery.setPhotos(this.activeMedia, []);
+        // Show folder browser with cached data immediately
+        FolderBrowser.show(this.activeMedia, this.activeAlbums);
       }
 
       // Fetch fresh photos & videos recursively from Google Drive API
@@ -153,7 +154,8 @@ const App = {
         if (driveResult && driveResult.media && driveResult.media.length > 0) {
           this.activeMedia = driveResult.media;
           this.activeAlbums = driveResult.albums || [];
-          PhotoGallery.setPhotos(this.activeMedia, this.activeAlbums);
+          // Show folder browser (fresh data)
+          FolderBrowser.show(this.activeMedia, this.activeAlbums);
           
           if (statusDot) {
             statusDot.className = 'status-dot';
@@ -189,7 +191,9 @@ const App = {
     }
 
     this.activeMedia = APP_CONFIG.starterMemories;
-    PhotoGallery.setPhotos(this.activeMedia, []);
+    this.activeAlbums = [];
+    // In demo mode, show folder browser too (just "All Memories")
+    FolderBrowser.show(this.activeMedia, this.activeAlbums);
   },
 
   bindModals() {
