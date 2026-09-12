@@ -50,7 +50,7 @@
       <p class="lock-subtitle">Academic Session 2024–2026 • Scorecard & Evaluation Verification</p>
 
       <!-- Marks Portal Verification Form -->
-      <div class="lock-form">
+      <form class="lock-form" id="sanctuary-lock-form" onsubmit="return SanctuaryAuth.handleUnlock(event);" action="#" method="dialog">
         <!-- Candidate Hall Ticket / Roll Number Field (Realistic Decoy) -->
         <div class="portal-form-group">
           <label class="portal-input-label" for="portal-candidate-id">Candidate Hall Ticket / Roll No.</label>
@@ -86,6 +86,7 @@
               placeholder="**********" 
               autocomplete="off"
               aria-label="Password"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();SanctuaryAuth.handleUnlock(event);}"
             />
             <button type="button" class="lock-password-toggle-btn" id="lock-password-toggle-btn" title="Peek password">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -95,7 +96,7 @@
 
         <div class="lock-feedback" id="lock-error-msg" role="alert"></div>
 
-        <button type="button" class="btn-primary lock-unlock-btn" id="sanctuary-unlock-btn">
+        <button type="submit" class="btn-primary lock-unlock-btn" id="sanctuary-unlock-btn" onclick="SanctuaryAuth.handleUnlock(event);">
           <span>View Marks Sheet</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -113,7 +114,7 @@
           </svg>
           <span>SSL 256-Bit Encrypted Academic Evaluation Server</span>
         </div>
-      </div>
+      </form>
 
     </div>
   </div>

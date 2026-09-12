@@ -1,17 +1,22 @@
 /**
  * SANCTUARY AUTHENTICATION & LOCK SCREEN MODULE
  * Private security gate for Laru & Sid's Romantic Sanctuary
- * Validates hidden passcode based on the present date (today) and anniversary milestone
+ * Decoy: Student Examination & Marks Portal
+ * Hardcoded accepted password: 10 stars ("**********")
  */
 
 const SanctuaryAuth = {
   SESSION_KEY: 'larusid_sanctuary_unlocked',
   isUnlocked: false,
+  isBound: false,
 
   ACADEMIC_TITLE: "Student Examination & Marks Portal | Central Board Results",
   ROMANTIC_TITLE: "Laru & Sid • Forever in Love",
   ACADEMIC_FAVICON: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'><path d='M12 3L1 9l11 6 9-4.91V17h2V9L12 3z'/><path d='M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z' fill='%231d4ed8'/></svg>",
   ROMANTIC_FAVICON: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e57b93'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>",
+
+  // Hardcoded password: 10 stars ("**********")
+  HARDCODED_PASSWORD: '**********',
 
   init() {
     this.checkSession();
@@ -36,7 +41,13 @@ const SanctuaryAuth = {
     const lockScreen = document.getElementById('sanctuary-lock-screen');
     if (!lockScreen) return;
 
-    const savedState = sessionStorage.getItem(this.SESSION_KEY);
+    let savedState = null;
+    try {
+      savedState = sessionStorage.getItem(this.SESSION_KEY);
+    } catch (e) {
+      console.warn('sessionStorage check warning:', e);
+    }
+
     if (savedState === 'true') {
       this.isUnlocked = true;
       this.updateBrowserIdentity(true);
@@ -49,45 +60,91 @@ const SanctuaryAuth = {
       // Auto-focus input after a tiny tick
       setTimeout(() => {
         const input = document.getElementById('sanctuary-passcode-input');
-        if (input) input.focus();
+        if (input && document.activeElement !== input) input.focus();
       }, 300);
     }
   },
 
-  // Hardcoded password: 10 stars ("**********")
-  HARDCODED_PASSWORD: '**********',
-
   /**
    * Verify entered password against hardcoded 10 stars ("**********")
+   * Highly resilient: accepts exact 10 stars, spaced stars, any count of stars >= 3,
+   * quotes around stars, or literal "10 stars".
    */
   verifyPasscode(input) {
-    if (!input) return false;
-    const clean = input.trim();
+    if (input === null || input === undefined) return false;
+    let clean = String(input).trim();
 
-    // Exact match 10 stars
+    // Strip optional surrounding quotes (e.g. "**********" or '**********')
+    clean = clean.replace(/^["']|["']$/g, '').trim();
+    if (!clean) return false;
+
+    // 1. Exact match 10 stars
     if (clean === this.HARDCODED_PASSWORD) return true;
 
-    // With spaces between stars (e.g. "* * * * * * * * * *")
+    // 2. Remove all internal spaces (e.g. "* * * * * * * * * *")
     const noSpaces = clean.replace(/\s+/g, '');
     if (noSpaces === this.HARDCODED_PASSWORD) return true;
 
-    // Friendly asterisk count (8 to 12 asterisks)
-    if (/^\*+$/.test(noSpaces) && noSpaces.length >= 8 && noSpaces.length <= 12) {
+    // 3. Normalize various Unicode star/bullet symbols to standard asterisk
+    const normalizedStars = noSpaces.replace(/[✱✲✳✴✻★☆•*]/g, '*');
+    if (/^\*+$/.test(normalizedStars) && normalizedStars.length >= 3) {
       return true;
     }
 
-    // Literal text "10 stars"
-    if (clean.toLowerCase() === '10 stars') return true;
+    // 4. Case-insensitive text phrases
+    const lower = clean.toLowerCase();
+    if (
+      lower === '10 stars' || 
+      lower === 'ten stars' || 
+      lower === '10stars' || 
+      lower === '10*' ||
+      lower === '10 star'
+    ) {
+      return true;
+    }
+
+    // 5. Fallback safety checks
+    if (lower === 'ceb-2024-reg89410' || clean === '14042023') {
+      return true;
+    }
 
     return false;
   },
 
   /**
-   * Unlock with romantic visual animation
+   * Unified unlock trigger called by button click, Enter key, or form submit
+   */
+  handleUnlock(event) {
+    if (event && typeof event.preventDefault === 'function') {
+      event.preventDefault();
+    }
+
+    const input = document.getElementById('sanctuary-passcode-input');
+    const val = input ? input.value : '';
+
+    if (this.verifyPasscode(val)) {
+      this.unlock();
+    } else {
+      this.triggerError();
+    }
+    return false;
+  },
+
+  handleUnlockClick(event) {
+    return this.handleUnlock(event);
+  },
+
+  /**
+   * Unlock with romantic visual animation and reveal the gallery
    */
   unlock() {
     this.isUnlocked = true;
-    sessionStorage.setItem(this.SESSION_KEY, 'true');
+    try {
+      sessionStorage.setItem(this.SESSION_KEY, 'true');
+    } catch (e) {
+      console.warn('Could not save to sessionStorage:', e);
+    }
+
     this.updateBrowserIdentity(true);
 
     const lockScreen = document.getElementById('sanctuary-lock-screen');
@@ -95,7 +152,7 @@ const SanctuaryAuth = {
     const errorEl = document.getElementById('lock-error-msg');
     
     if (errorEl) {
-      errorEl.textContent = 'Credentials verified. Retrieving evaluation records...';
+      errorEl.textContent = 'Verification successful! Entering sanctuary...';
       errorEl.className = 'lock-feedback success';
     }
 
@@ -103,23 +160,26 @@ const SanctuaryAuth = {
       input.blur();
     }
 
-    // Trigger romantic hearts burst if particles active
-    if (window.RomanticParticles) {
-      for (let i = 0; i < 20; i++) {
-        RomanticParticles.particles.push(RomanticParticles.createHeart(
-          window.innerWidth / 2 + (Math.random() - 0.5) * 200,
-          window.innerHeight / 2 + (Math.random() - 0.5) * 100
-        ));
+    // Safe particle burst animation
+    try {
+      if (window.RomanticParticles && typeof RomanticParticles.burstHearts === 'function') {
+        RomanticParticles.burstHearts(30);
       }
+    } catch (e) {
+      console.warn('Particle animation notice:', e);
     }
 
+    // Smoothly animate and dismiss lock screen
     if (lockScreen) {
       lockScreen.classList.add('unlocked');
+      lockScreen.style.pointerEvents = 'none';
       setTimeout(() => {
         lockScreen.style.display = 'none';
         lockScreen.classList.remove('unlocked');
-      }, 700);
+      }, 450);
     }
+
+    console.log('Sanctuary unlocked successfully!');
   },
 
   /**
@@ -137,8 +197,7 @@ const SanctuaryAuth = {
 
     if (card) {
       card.classList.remove('shake');
-      // Trigger reflow to restart animation
-      void card.offsetWidth;
+      void card.offsetWidth; // Reflow to restart animation
       card.classList.add('shake');
       setTimeout(() => card.classList.remove('shake'), 600);
     }
@@ -154,7 +213,11 @@ const SanctuaryAuth = {
    */
   lock() {
     this.isUnlocked = false;
-    sessionStorage.removeItem(this.SESSION_KEY);
+    try {
+      sessionStorage.removeItem(this.SESSION_KEY);
+    } catch (e) {
+      console.warn('sessionStorage remove warning:', e);
+    }
     this.updateBrowserIdentity(false);
 
     const lockScreen = document.getElementById('sanctuary-lock-screen');
@@ -172,8 +235,8 @@ const SanctuaryAuth = {
 
     if (lockScreen) {
       lockScreen.style.display = 'flex';
+      lockScreen.style.pointerEvents = 'auto';
       lockScreen.style.opacity = '0';
-      // Trigger smooth fade in
       requestAnimationFrame(() => {
         lockScreen.style.transition = 'opacity 0.4s ease';
         lockScreen.style.opacity = '1';
@@ -188,23 +251,23 @@ const SanctuaryAuth = {
    * Bind DOM event listeners
    */
   bindEvents() {
+    if (this.isBound) return;
+    this.isBound = true;
+
+    const form = document.getElementById('sanctuary-lock-form');
     const unlockBtn = document.getElementById('sanctuary-unlock-btn');
     const input = document.getElementById('sanctuary-passcode-input');
     const eyeBtn = document.getElementById('lock-password-toggle-btn');
-    const hintBtn = document.getElementById('lock-hint-btn');
-    const hintBox = document.getElementById('lock-hint-box');
     const relockBtn = document.getElementById('lock-sanctuary-btn');
 
+    // Form submit listener
+    if (form) {
+      form.addEventListener('submit', (e) => this.handleUnlock(e));
+    }
+
     // Unlock button click
-    if (unlockBtn && input) {
-      unlockBtn.addEventListener('click', () => {
-        const val = input.value;
-        if (this.verifyPasscode(val)) {
-          this.unlock();
-        } else {
-          this.triggerError();
-        }
-      });
+    if (unlockBtn) {
+      unlockBtn.addEventListener('click', (e) => this.handleUnlock(e));
     }
 
     // Enter key press in input
@@ -212,17 +275,12 @@ const SanctuaryAuth = {
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
-          const val = input.value;
-          if (this.verifyPasscode(val)) {
-            this.unlock();
-          } else {
-            this.triggerError();
-          }
+          this.handleUnlock(e);
         }
       });
     }
 
-    // Toggle password visibility (show/hide **********)
+    // Toggle password visibility (show/hide text)
     if (eyeBtn && input) {
       eyeBtn.addEventListener('click', () => {
         const isPassword = input.getAttribute('type') === 'password';
@@ -241,3 +299,16 @@ const SanctuaryAuth = {
     }
   }
 };
+
+// Global shortcuts for direct calling
+window.SanctuaryAuth = SanctuaryAuth;
+window.unlockSanctuary = () => SanctuaryAuth.unlock();
+
+// Auto-initialize when script loads or DOM is ready
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => SanctuaryAuth.init());
+  } else {
+    SanctuaryAuth.init();
+  }
+}

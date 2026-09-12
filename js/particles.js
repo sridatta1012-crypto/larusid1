@@ -34,6 +34,43 @@ const RomanticParticles = {
     }
   },
 
+  createHeart(x, y) {
+    const width = this.canvas ? this.canvas.width : window.innerWidth;
+    const height = this.canvas ? this.canvas.height : window.innerHeight;
+    return {
+      x: x !== undefined ? x : Math.random() * width,
+      y: y !== undefined ? y : height + 20,
+      size: Math.random() * 12 + 8,
+      speedY: Math.random() * 1.2 + 0.6,
+      speedX: (Math.random() - 0.5) * 1.5,
+      swaySpeed: Math.random() * 0.03 + 0.01,
+      swayOffset: Math.random() * Math.PI * 2,
+      opacity: Math.random() * 0.5 + 0.4,
+      type: 'heart',
+      color: 'rgba(247, 168, 184, '
+    };
+  },
+
+  burstHearts(count = 25) {
+    if (!this.particles) this.particles = [];
+    const width = this.canvas ? this.canvas.width : window.innerWidth;
+    const height = this.canvas ? this.canvas.height : window.innerHeight;
+    for (let i = 0; i < count; i++) {
+      this.particles.push({
+        x: width / 2 + (Math.random() - 0.5) * 280,
+        y: height / 2 + (Math.random() - 0.5) * 160,
+        size: Math.random() * 14 + 10,
+        speedY: Math.random() * 1.6 + 0.8,
+        speedX: (Math.random() - 0.5) * 2.2,
+        swaySpeed: Math.random() * 0.03 + 0.02,
+        swayOffset: Math.random() * Math.PI * 2,
+        opacity: 0.95,
+        type: 'heart',
+        color: 'rgba(247, 168, 184, '
+      });
+    }
+  },
+
   resize() {
     if (!this.canvas) return;
     this.canvas.width = window.innerWidth;

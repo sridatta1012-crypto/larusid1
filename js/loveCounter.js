@@ -46,8 +46,10 @@ const LoveCounter = {
       heroNamesEl.textContent = `${p1} & ${p2}`;
     }
 
-    // Update page title
-    document.title = `${p1} & ${p2} • Forever in Love`;
+    // Update page title (only if already unlocked)
+    if (!window.SanctuaryAuth || window.SanctuaryAuth.isUnlocked) {
+      document.title = `${p1} & ${p2} • Forever in Love`;
+    }
   },
 
   startTicker() {
