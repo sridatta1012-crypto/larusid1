@@ -47,6 +47,38 @@ const CinemaLightbox = {
           this.close();
         }
       });
+
+      // Mobile touch swipe gestures (swipe left/right to navigate, swipe down to dismiss)
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      backdrop.addEventListener('touchstart', (e) => {
+        if (!this.isOpen || e.touches.length > 1) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }, { passive: true });
+
+      backdrop.addEventListener('touchend', (e) => {
+        if (!this.isOpen || e.changedTouches.length === 0) return;
+        if (document.activeElement === noteInput) return;
+
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // Horizontal swipe threshold: 45px
+        if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY) * 1.4) {
+          if (diffX < 0) {
+            this.next(); // swiped left -> next
+          } else {
+            this.prev(); // swiped right -> prev
+          }
+        } else if (diffY > 80 && Math.abs(diffY) > Math.abs(diffX) * 2) {
+          // Swipe down to dismiss
+          this.close();
+        }
+      }, { passive: true });
     }
 
     // Keyboard navigation

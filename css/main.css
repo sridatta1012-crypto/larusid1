@@ -655,43 +655,144 @@
   margin-top: 10px;
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments (Mobile-First Polish) */
 @media (max-width: 768px) {
   .navbar {
-    padding: 12px 18px;
+    padding: 10px 14px;
+    gap: 8px;
+  }
+  .brand-monogram {
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
   }
   .brand-names {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
+    letter-spacing: 0;
   }
-  .hero-title {
-    font-size: 2.4rem;
+  .nav-actions {
+    gap: 6px;
   }
-  .counter-grid {
-    gap: 12px;
+  .status-pill {
+    padding: 6px 10px;
   }
-  .counter-number {
-    font-size: 1.8rem;
-    min-width: 44px;
+  #nav-status-text {
+    display: none; /* Icon-only status dot on mobile for compact navbar */
   }
-  .counter-separator {
-    font-size: 1.4rem;
+  .mini-player {
+    padding: 4px 8px 4px 6px;
+    gap: 6px;
   }
-  .love-counter-box {
-    padding: 20px;
-    width: 100%;
+  .player-text {
+    display: none; /* Hide track title on mobile to preserve navbar space */
+  }
+  .vinyl-disc {
+    width: 28px;
+    height: 28px;
+  }
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Gallery Controls Mobile */
+  .gallery-controls-container {
+    padding: 0 12px 20px;
+    margin-top: 14px;
   }
   .gallery-toolbar {
+    padding: 12px 14px;
+    gap: 12px;
     flex-direction: column;
     align-items: stretch;
   }
   .view-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 3px;
+  }
+  .view-tab-btn {
+    padding: 8px 6px;
+    font-size: 0.78rem;
     justify-content: center;
+    gap: 5px;
+  }
+  .view-tab-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+  .filter-group {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .filter-group::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-btn {
+    flex-shrink: 0;
+    padding: 7px 13px;
+    font-size: 0.78rem;
+  }
+  .search-box {
+    width: 100%;
   }
   .search-input {
-    width: 100%;
+    width: 100% !important;
+    font-size: 16px !important; /* Prevents iOS auto-zoom */
+    min-height: 42px;
   }
-  .search-input:focus {
+
+  /* Modals: Native Mobile Bottom Sheet Experience */
+  .modal-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .modal-card {
+    border-radius: 24px 24px 0 0;
+    max-height: 88dvh;
+    padding: 24px 18px 28px;
+    transform: translateY(100%);
+  }
+  .modal-backdrop.open .modal-card {
+    transform: translateY(0);
+  }
+  .modal-close-btn {
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+  }
+  .modal-title {
+    font-size: 1.35rem;
+  }
+  .form-input {
+    font-size: 16px !important; /* Prevents iOS auto-zoom */
+    min-height: 46px;
+  }
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .form-actions button {
     width: 100%;
+    min-height: 46px;
+  }
+}
+
+@media (max-width: 420px) {
+  .brand-names span:not(:first-child) {
+    display: none;
+  }
+  .nav-actions {
+    gap: 4px;
   }
 }
 
@@ -705,6 +806,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background: radial-gradient(circle at center, rgba(30, 10, 22, 0.96) 0%, rgba(8, 3, 6, 0.98) 100%);
   backdrop-filter: var(--glass-blur-heavy);
   -webkit-backdrop-filter: var(--glass-blur-heavy);
@@ -712,8 +814,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 20px 16px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .lock-screen-backdrop.unlocked {
@@ -1017,5 +1121,56 @@
   }
   50% {
     transform: translateY(-2px);
+  }
+}
+
+/* Mobile-First Lock Screen Adaptations */
+@media (max-width: 480px) {
+  .marks-portal-card {
+    padding: 24px 16px 20px;
+    border-radius: var(--radius-md);
+  }
+  .portal-badge-wrap {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 8px;
+  }
+  .marks-portal-badge {
+    width: 52px;
+    height: 52px;
+  }
+  .marks-portal-badge svg {
+    width: 28px;
+    height: 28px;
+  }
+  .portal-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+  }
+  .lock-title {
+    font-size: 1.25rem;
+  }
+  .lock-subtitle {
+    font-size: 0.78rem;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  .portal-readonly-input {
+    font-size: 0.8rem;
+    padding: 10px 12px 10px 36px;
+    min-height: 44px;
+  }
+  .lock-password-input {
+    font-size: 16px !important; /* CRITICAL: Prevents iOS auto-zoom */
+    padding: 11px 40px;
+    min-height: 48px;
+  }
+  .lock-unlock-btn {
+    min-height: 48px;
+    font-size: 0.95rem;
+  }
+  .portal-security-footer {
+    font-size: 0.68rem;
+    margin-top: 16px;
   }
 }

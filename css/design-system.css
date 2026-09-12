@@ -307,3 +307,15 @@ img {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(229, 123, 147, 0.55);
 }
+
+/* Mobile-First Touch & Ergonomics Optimizations */
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
+button, a, input, select, textarea {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}

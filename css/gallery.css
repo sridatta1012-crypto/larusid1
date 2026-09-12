@@ -18,6 +18,36 @@
 
 @media (max-width: 640px) {
   .masonry-grid {
+    column-count: 2;
+    column-gap: 10px;
+  }
+  .masonry-item {
+    margin-bottom: 10px;
+    border-radius: 12px;
+  }
+  .masonry-img-wrapper {
+    min-height: 120px;
+  }
+  .masonry-img {
+    min-height: 120px;
+  }
+  .masonry-overlay {
+    padding: 8px 10px;
+  }
+  .masonry-title {
+    font-size: 0.8rem;
+  }
+  .masonry-date {
+    font-size: 0.68rem;
+  }
+  .card-tag {
+    font-size: 0.62rem;
+    padding: 1px 6px;
+  }
+}
+
+@media (max-width: 340px) {
+  .masonry-grid {
     column-count: 1;
   }
 }
@@ -215,6 +245,18 @@
   gap: 42px 32px;
   padding: 20px 0;
   justify-items: center;
+}
+
+@media (max-width: 640px) {
+  .polaroid-grid {
+    grid-template-columns: 1fr;
+    gap: 32px 0;
+    padding: 12px 0;
+  }
+  .polaroid-card {
+    max-width: 300px;
+    padding: 14px 14px 30px 14px;
+  }
 }
 
 .polaroid-card {
