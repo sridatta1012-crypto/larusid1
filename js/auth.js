@@ -151,6 +151,11 @@ const SanctuaryAuth = {
 
     this.updateBrowserIdentity(true);
 
+    // Restore body scroll now that we're unlocked
+    document.body.style.overflow = '';
+    document.body.style.overscrollBehavior = '';
+    document.documentElement.style.overflow = '';
+
     const lockScreen = document.getElementById('sanctuary-lock-screen');
     const input = document.getElementById('sanctuary-passcode-input');
     const errorEl = document.getElementById('lock-error-msg');
@@ -265,12 +270,17 @@ const SanctuaryAuth = {
       }
     }
 
-    // 5. Restore lock screen decoy immediately
+    // 5. Restore lock screen decoy immediately and freeze body scroll
     const lockScreen = document.getElementById('sanctuary-lock-screen');
     if (lockScreen) {
       lockScreen.classList.remove('unlocked');
       lockScreen.style.display = 'flex';
       lockScreen.style.pointerEvents = 'auto';
+
+      // Freeze body scroll so dragging CANNOT reveal gallery behind the lock screen
+      document.body.style.overflow = 'hidden';
+      document.body.style.overscrollBehavior = 'none';
+      document.documentElement.style.overflow = 'hidden';
 
       if (instant) {
         lockScreen.style.transition = 'none';
