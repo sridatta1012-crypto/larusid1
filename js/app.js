@@ -8,7 +8,10 @@ const App = {
   activeAlbums: [],
 
   async init() {
-    // 1. Initialize Subsystems
+    // 1. Initialize Subsystems & Security Gate
+    if (window.SanctuaryAuth) {
+      SanctuaryAuth.init();
+    }
     LoveCounter.init();
     RomanticParticles.init();
     RomanticAudioPlayer.init();

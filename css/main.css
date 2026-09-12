@@ -339,7 +339,7 @@
 /* Gallery Controls & Sticky Toolbar */
 .gallery-controls-container {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 28px auto 0 auto;
   padding: 0 24px 28px;
 }
 
@@ -692,5 +692,305 @@
   }
   .search-input:focus {
     width: 100%;
+  }
+}
+
+/* ==========================================================================
+   SANCTUARY PASSCODE LOCK SCREEN (Luxury Glassmorphism Security Gate)
+   ========================================================================== */
+
+.lock-screen-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, rgba(30, 10, 22, 0.96) 0%, rgba(8, 3, 6, 0.98) 100%);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lock-screen-backdrop.unlocked {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+
+[data-theme="light"] .lock-screen-backdrop {
+  background: radial-gradient(circle at center, rgba(254, 243, 246, 0.97) 0%, rgba(246, 228, 234, 0.98) 100%);
+}
+
+.lock-card {
+  background: linear-gradient(145deg, rgba(36, 14, 26, 0.88), rgba(18, 6, 14, 0.96));
+  border: 1px solid rgba(247, 168, 184, 0.3);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 50px -10px var(--color-primary-glow);
+  width: 100%;
+  max-width: 440px;
+  padding: 42px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition: transform var(--transition-normal);
+}
+
+[data-theme="light"] .lock-card {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(184, 67, 93, 0.22);
+  box-shadow: 0 20px 50px rgba(184, 67, 93, 0.16), 0 0 35px -8px rgba(229, 123, 147, 0.2);
+}
+
+.lock-icon-badge {
+  position: relative;
+  margin: 0 auto 20px auto;
+  width: 68px;
+  height: 68px;
+}
+
+.lock-monogram {
+  width: 68px;
+  height: 68px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.35rem;
+  box-shadow: 0 6px 20px var(--color-primary-glow);
+  animation: pulseMonogram 3s ease-in-out infinite;
+}
+
+@keyframes pulseMonogram {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 6px 20px var(--color-primary-glow);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 8px 28px var(--color-primary-glow);
+  }
+}
+
+.lock-padlock-icon {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 28px;
+  height: 28px;
+  background: var(--color-bg-secondary);
+  border: 2px solid var(--color-accent-gold);
+  border-radius: var(--radius-full);
+  color: var(--color-accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .lock-padlock-icon {
+  background: #fff;
+}
+
+.lock-title {
+  font-family: var(--font-serif);
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.lock-subtitle {
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.lock-form {
+  position: relative;
+}
+
+.lock-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.lock-field-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--color-primary-light);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.lock-password-input {
+  width: 100%;
+  padding: 14px 46px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 1.25rem;
+  letter-spacing: 5px;
+  text-align: center;
+  outline: none;
+  transition: all var(--transition-normal);
+  font-family: inherit;
+}
+
+.lock-password-input::placeholder {
+  letter-spacing: 5px;
+  opacity: 0.45;
+  color: var(--color-text-muted);
+}
+
+.lock-password-input:focus {
+  border-color: var(--color-primary);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 18px var(--color-primary-glow);
+}
+
+[data-theme="light"] .lock-password-input {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(184, 67, 93, 0.25);
+  color: #26111a;
+}
+
+[data-theme="light"] .lock-password-input:focus {
+  background: #fff;
+  border-color: var(--color-primary-dark);
+}
+
+.lock-password-toggle-btn {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast);
+}
+
+.lock-password-toggle-btn:hover {
+  color: var(--color-primary-light);
+}
+
+.lock-feedback {
+  min-height: 22px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+
+.lock-feedback.error {
+  color: #f87171;
+  animation: shakeFeedback 0.4s ease;
+}
+
+.lock-feedback.success {
+  color: #34d399;
+}
+
+.lock-unlock-btn {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px var(--color-primary-glow);
+  transition: all var(--transition-fast);
+}
+
+.lock-unlock-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px var(--color-primary-glow);
+}
+
+.lock-hint-container {
+  margin-top: 20px;
+}
+
+.lock-hint-btn {
+  background: transparent;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--color-accent-gold);
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity var(--transition-fast);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lock-hint-btn:hover {
+  opacity: 1;
+  color: var(--color-accent-gold-light);
+}
+
+.lock-hint-box {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(226, 185, 127, 0.08);
+  border: 1px dashed rgba(226, 185, 127, 0.35);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: var(--color-accent-gold-light);
+  line-height: 1.5;
+}
+
+.lock-hint-box code {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+/* Shake Animation on Card */
+@keyframes lockShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  15%, 45%, 75% {
+    transform: translateX(-10px);
+  }
+  30%, 60%, 90% {
+    transform: translateX(10px);
+  }
+}
+
+.lock-card.shake {
+  animation: lockShake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shakeFeedback {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
   }
 }
