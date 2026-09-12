@@ -24,60 +24,91 @@
 <body>
 
   <!-- ========================================================================= -->
-  <!-- SANCTUARY PASSCODE LOCK SCREEN (Romantic Private Security Gate) -->
+  <!-- MARKS & RESULTS VERIFICATION PORTAL (Decoy Security Gate) -->
   <!-- ========================================================================= -->
   <div class="lock-screen-backdrop" id="sanctuary-lock-screen" role="dialog" aria-modal="true">
-    <div class="lock-card" id="lock-card-box">
+    <div class="lock-card marks-portal-card" id="lock-card-box">
       
-      <!-- Monogram & Padlock Heart Badge -->
-      <div class="lock-icon-badge">
-        <div class="lock-monogram">
-          <span>L</span>
-          <svg class="lock-heart-svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-          <span>S</span>
-        </div>
-        <div class="lock-padlock-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      <!-- Academic / Examination Seal Emblem -->
+      <div class="portal-badge-wrap">
+        <div class="marks-portal-badge">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
           </svg>
+        </div>
+        <div class="portal-status-dot-badge" title="Portal Online • Central Assessment Server">
+          <span class="portal-dot"></span>
         </div>
       </div>
 
-      <h2 class="lock-title">Our Private Sanctuary</h2>
-      <p class="lock-subtitle">Enter our secret date to unlock our cherished moments</p>
+      <div class="portal-tag">CENTRAL EXAMINATION BOARD • RESULTS ARCHIVE</div>
+      <h2 class="lock-title">Student Marks & Evaluation Portal</h2>
+      <p class="lock-subtitle">Academic Session 2024–2026 • Scorecard & Evaluation Verification</p>
 
-      <!-- Password Input Form -->
+      <!-- Marks Portal Verification Form -->
       <div class="lock-form">
-        <div class="lock-input-wrap">
-          <svg class="lock-field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 2v4"/><path d="M16 2v4"/>
-          </svg>
-          <input 
-            type="password" 
-            id="sanctuary-passcode-input" 
-            class="lock-password-input" 
-            placeholder="••••••••••" 
-            autocomplete="off"
-            aria-label="Secret Passcode Date"
-          />
-          <button type="button" class="lock-password-toggle-btn" id="lock-password-toggle-btn" title="Peek secret date">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-          </button>
+        <!-- Candidate Hall Ticket / Roll Number Field (Realistic Decoy) -->
+        <div class="portal-form-group">
+          <label class="portal-input-label" for="portal-candidate-id">Candidate Hall Ticket / Roll No.</label>
+          <div class="portal-input-wrap">
+            <svg class="portal-field-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <input 
+              type="text" 
+              id="portal-candidate-id" 
+              class="portal-readonly-input" 
+              value="CEB-2024-REG89410" 
+              readonly 
+              tabindex="-1"
+            />
+          </div>
+        </div>
+
+        <!-- Date of Birth / Security Access Key (Actual Password Field) -->
+        <div class="portal-form-group">
+          <label class="portal-input-label" for="sanctuary-passcode-input">DOB / Verification Key (DDMMYYYY)</label>
+          <div class="lock-input-wrap">
+            <svg class="lock-field-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 2v4"/><path d="M16 2v4"/>
+            </svg>
+            <input 
+              type="password" 
+              id="sanctuary-passcode-input" 
+              class="lock-password-input" 
+              placeholder="••••••••••" 
+              autocomplete="off"
+              aria-label="Security Access Key"
+            />
+            <button type="button" class="lock-password-toggle-btn" id="lock-password-toggle-btn" title="Peek key">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="lock-feedback" id="lock-error-msg" role="alert"></div>
 
         <button type="button" class="btn-primary lock-unlock-btn" id="sanctuary-unlock-btn">
-          <span>Unlock Sanctuary</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span>View Marks Sheet</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
         </button>
 
-        <div class="lock-hint-container">
-          <button type="button" class="lock-hint-btn" id="lock-hint-btn">Need a Hint? ♡</button>
-          <div class="lock-hint-box" id="lock-hint-box" style="display: none;">
-            <p>Enter today's present date (e.g. <code>12092026</code> or <code>12-09-2026</code>) or our milestone date (<code>14042023</code>) 💕</p>
-          </div>
+        <div class="portal-security-footer">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <span>SSL 256-Bit Encrypted Academic Evaluation Server</span>
         </div>
       </div>
 

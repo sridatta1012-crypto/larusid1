@@ -748,104 +748,151 @@
   box-shadow: 0 20px 50px rgba(184, 67, 93, 0.16), 0 0 35px -8px rgba(229, 123, 147, 0.2);
 }
 
-.lock-icon-badge {
+.marks-portal-card {
+  max-width: 460px;
+  padding: 38px 32px 30px;
+  background: linear-gradient(145deg, rgba(17, 24, 39, 0.94), rgba(10, 15, 29, 0.98));
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 40px -10px rgba(59, 130, 246, 0.25);
+}
+
+[data-theme="light"] .marks-portal-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(37, 99, 235, 0.2);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+}
+
+.portal-badge-wrap {
   position: relative;
-  margin: 0 auto 20px auto;
-  width: 68px;
-  height: 68px;
+  margin: 0 auto 14px auto;
+  width: 66px;
+  height: 66px;
 }
 
-.lock-monogram {
-  width: 68px;
-  height: 68px;
+.marks-portal-badge {
+  width: 66px;
+  height: 66px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary-dark));
+  background: linear-gradient(135deg, #1d4ed8, #0f172a);
+  border: 2px solid rgba(147, 197, 253, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  font-family: var(--font-serif);
-  font-weight: 700;
-  font-size: 1.35rem;
-  box-shadow: 0 6px 20px var(--color-primary-glow);
-  animation: pulseMonogram 3s ease-in-out infinite;
+  color: #bfdbfe;
+  box-shadow: 0 6px 20px rgba(29, 78, 216, 0.35);
 }
 
-@keyframes pulseMonogram {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 6px 20px var(--color-primary-glow);
-  }
-  50% {
-    transform: scale(1.04);
-    box-shadow: 0 8px 28px var(--color-primary-glow);
-  }
-}
-
-.lock-padlock-icon {
+.portal-status-dot-badge {
   position: absolute;
-  bottom: -3px;
-  right: -3px;
-  width: 28px;
-  height: 28px;
-  background: var(--color-bg-secondary);
-  border: 2px solid var(--color-accent-gold);
+  bottom: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
   border-radius: var(--radius-full);
-  color: var(--color-accent-gold);
+  background: #0f172a;
+  border: 2px solid #10b981;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-[data-theme="light"] .lock-padlock-icon {
-  background: #fff;
+.portal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+.portal-tag {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 6px;
 }
 
 .lock-title {
   font-family: var(--font-serif);
-  font-size: 1.85rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-text);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   letter-spacing: -0.01em;
 }
 
 .lock-subtitle {
-  font-size: 0.92rem;
-  color: var(--color-text-secondary);
-  margin-bottom: 28px;
-  line-height: 1.5;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 22px;
+  line-height: 1.45;
 }
 
-.lock-form {
+.portal-form-group {
+  text-align: left;
+  margin-bottom: 14px;
+}
+
+.portal-input-label {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 5px;
+  letter-spacing: 0.02em;
+}
+
+.portal-input-wrap {
   position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.portal-field-icon {
+  position: absolute;
+  left: 14px;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.portal-readonly-input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: var(--radius-sm);
+  color: #94a3b8;
+  font-family: monospace;
+  font-size: 0.88rem;
+  outline: none;
+  cursor: default;
+  letter-spacing: 0.5px;
 }
 
 .lock-input-wrap {
   position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
 }
 
 .lock-field-icon {
   position: absolute;
-  left: 16px;
-  color: var(--color-primary-light);
-  opacity: 0.85;
+  left: 14px;
+  color: #64748b;
   pointer-events: none;
 }
 
 .lock-password-input {
   width: 100%;
-  padding: 14px 46px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1.5px solid var(--color-border-strong);
+  padding: 12px 46px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(148, 163, 184, 0.28);
   border-radius: var(--radius-sm);
   color: var(--color-text);
-  font-size: 1.25rem;
-  letter-spacing: 5px;
+  font-size: 1.15rem;
+  letter-spacing: 4px;
   text-align: center;
   outline: none;
   transition: all var(--transition-normal);
@@ -853,26 +900,26 @@
 }
 
 .lock-password-input::placeholder {
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   opacity: 0.45;
   color: var(--color-text-muted);
 }
 
 .lock-password-input:focus {
-  border-color: var(--color-primary);
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 18px var(--color-primary-glow);
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.3);
 }
 
 [data-theme="light"] .lock-password-input {
   background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(184, 67, 93, 0.25);
-  color: #26111a;
+  border-color: rgba(100, 116, 139, 0.25);
+  color: #0f172a;
 }
 
 [data-theme="light"] .lock-password-input:focus {
   background: #fff;
-  border-color: var(--color-primary-dark);
+  border-color: #2563eb;
 }
 
 .lock-password-toggle-btn {
@@ -891,14 +938,14 @@
 }
 
 .lock-password-toggle-btn:hover {
-  color: var(--color-primary-light);
+  color: #93c5fd;
 }
 
 .lock-feedback {
   min-height: 22px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   transition: all 0.2s ease;
 }
 
@@ -913,60 +960,38 @@
 
 .lock-unlock-btn {
   width: 100%;
-  padding: 14px 24px;
-  font-size: 1rem;
+  padding: 13px 24px;
+  font-size: 0.96rem;
   letter-spacing: 0.02em;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  box-shadow: 0 8px 24px var(--color-primary-glow);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .lock-unlock-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px var(--color-primary-glow);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.45);
 }
 
-.lock-hint-container {
+.portal-security-footer {
   margin-top: 20px;
-}
-
-.lock-hint-btn {
-  background: transparent;
-  border: none;
-  font-family: var(--font-sans);
-  font-size: 0.82rem;
-  color: var(--color-accent-gold);
-  cursor: pointer;
-  opacity: 0.85;
-  transition: opacity var(--transition-fast);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.lock-hint-btn:hover {
-  opacity: 1;
-  color: var(--color-accent-gold-light);
-}
-
-.lock-hint-box {
-  margin-top: 12px;
-  padding: 10px 14px;
-  background: rgba(226, 185, 127, 0.08);
-  border: 1px dashed rgba(226, 185, 127, 0.35);
-  border-radius: var(--radius-sm);
-  font-size: 0.82rem;
-  color: var(--color-accent-gold-light);
-  line-height: 1.5;
-}
-
-.lock-hint-box code {
-  background: rgba(255, 255, 255, 0.12);
-  padding: 1px 5px;
-  border-radius: 4px;
-  font-family: monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: #64748b;
+  letter-spacing: 0.02em;
 }
 
 /* Shake Animation on Card */
